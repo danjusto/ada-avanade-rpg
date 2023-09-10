@@ -19,6 +19,8 @@ public class Character {
     private String name;
     @Enumerated(EnumType.STRING)
     private CharClass characterClass;
+    private int victories;
+    private int defeats;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,8 +28,13 @@ public class Character {
         this.name = dto.name();
         this.characterClass = dto.characterClass();
         this.user = user;
+        this.victories = 0;
+        this.defeats = 0;
     }
     public CharacterResponseDTO dto() {
-        return new CharacterResponseDTO(this.id, this.name, this.characterClass, this.user.getId());
+        return new CharacterResponseDTO(this.id, this.name, this.characterClass, this.victories, this.defeats, this.user.getId());
+    }
+    public void changeName(String newName) {
+        this.name = newName;
     }
 }
