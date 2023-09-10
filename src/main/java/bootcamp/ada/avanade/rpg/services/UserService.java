@@ -20,7 +20,7 @@ public class UserService {
     @Transactional
     public UserResponseDTO executeCreate(UserRequestDTO dto) {
         Optional<User> checkUserExists = this.userRepository.findByEmail(dto.email());
-        if (checkUserExists.isEmpty()) {
+        if (checkUserExists.isPresent()) {
             //erro
         }
         var newUser = this.userRepository.save(new User(dto));
@@ -28,27 +28,28 @@ public class UserService {
     }
     @Transactional
     public void executeEditPassword(Long id, PasswordRequestDTO dto) {
-        Optional<User> user = this.userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new EntityNotFoundException("User not found");
-        }
-        if (dto.password() != user.get().getPassword()) {
+        var user = getUser(id);
+        if (dto.password() != user.getPassword()) {
             //erro
         }
-        user.get().setPassword(dto.newPassword());
-        userRepository.save(user.get());
+        user.setPassword(dto.newPassword());
+        userRepository.save(user);
     }
     @Transactional
     public UserResponseDTO executeEditUser(Long id, UserRequestDTO dto) {
+        var user = getUser(id);
+        if (dto.password() != user.getPassword()) {
+            //erro
+        }
+        user.editNameAndEmail(dto.name(), dto.email());
+        var updatedUser = userRepository.save(user);
+        return updatedUser.dto();
+    }
+    protected User getUser(Long id) {
         Optional<User> user = this.userRepository.findById(id);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");
         }
-        if (dto.password() != user.get().getPassword()) {
-            //erro
-        }
-        user.get().editNameAndEmail(dto.name(), dto.email());
-        var updatedUser = userRepository.save(user.get());
-        return updatedUser.dto();
+        return user.get();
     }
 }
