@@ -27,12 +27,12 @@ public class UserService {
         return newUser.dto();
     }
     @Transactional
-    public void executeEditPassword(Long id, PasswordRequestDTO dto) {
+    public void executeChangePassword(Long id, PasswordRequestDTO dto) {
         var user = getUser(id);
         if (dto.password() != user.getPassword()) {
             //erro
         }
-        user.setPassword(dto.newPassword());
+        user.changePassword(dto.newPassword());
         userRepository.save(user);
     }
     @Transactional

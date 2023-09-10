@@ -22,8 +22,8 @@ public class UserController {
     }
     @PatchMapping("/password/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void editPassword(@PathVariable Long id, @RequestBody @Valid PasswordRequestDTO dto) {
-        this.userService.executeEditPassword(id, dto);
+    public void changePassword(@PathVariable Long id, @RequestBody @Valid PasswordRequestDTO dto) {
+        this.userService.executeChangePassword(id, dto);
     }
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -25,7 +25,7 @@ public class User {
     public UserResponseDTO dto() {
         return new UserResponseDTO(this.id, this.name, this.email);
     }
-    public void setPassword(String newPassword) {
+    public void changePassword(String newPassword) {
         this.password = newPassword;
     }
     public void editNameAndEmail(String name, String email) {
