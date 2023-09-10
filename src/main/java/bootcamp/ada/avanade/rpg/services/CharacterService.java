@@ -3,6 +3,7 @@ package bootcamp.ada.avanade.rpg.services;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
+import bootcamp.ada.avanade.rpg.exception.AppException;
 import bootcamp.ada.avanade.rpg.repositories.CharacterRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -23,7 +24,7 @@ public class CharacterService {
         var user = this.userService.getUser(dto.userId());
         Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(dto.userId(), dto.name());
         if (checkCharacterNameExists.isPresent()) {
-            //erro
+            throw new AppException("You already have a character with this name");
         }
         var newCharacter = this.characterRepository.save(new Character(dto, user));
         return newCharacter.dto();
@@ -41,7 +42,7 @@ public class CharacterService {
     public CharacterResponseDTO executeChangeName(Long id, CharacterRequestDTO dto) {
         Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(dto.userId(), dto.name());
         if (checkCharacterNameExists.isPresent()) {
-            //erro
+            throw new AppException("You already have a character with this name");
         }
         var character = getChar(id);
         character.changeName(dto.name());
