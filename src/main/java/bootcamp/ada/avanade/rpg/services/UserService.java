@@ -32,7 +32,7 @@ public class UserService {
     }
     @Transactional
     public void executeChangePassword(Long id, PasswordRequestDTO dto) {
-        var user = getUser(id);
+        var user = getUserById(id);
         if (!this.passwordEncoder.matches(dto.password(), user.getPassword())) {
             throw new PasswordException("Password not match");
         }
@@ -41,7 +41,7 @@ public class UserService {
     }
     @Transactional
     public UserResponseDTO executeEditUser(Long id, UserRequestDTO dto) {
-        var user = getUser(id);
+        var user = getUserById(id);
         if (!this.passwordEncoder.matches(dto.password(), user.getPassword())) {
             throw new PasswordException("Password not match");
         }
@@ -49,8 +49,15 @@ public class UserService {
         var updatedUser = userRepository.save(user);
         return updatedUser.dto();
     }
-    protected User getUser(Long id) {
+    protected User getUserById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        return user.get();
+    }
+    protected User getUserByEmail(String email) {
+        Optional<User> user = this.userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");
         }
