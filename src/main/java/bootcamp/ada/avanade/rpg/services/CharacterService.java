@@ -25,10 +25,7 @@ public class CharacterService {
     @Transactional
     public CharacterResponseDTO executeCreate(Principal principal, CharacterRequestDTO dto) {
         var user = this.userService.getUserByEmail(principal.getName());
-        Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(user.getId(), dto.name());
-        if (checkCharacterNameExists.isPresent()) {
-            throw new AppException("You already have a character with this name");
-        }
+        checkCharacterNameExists(user.getId(), dto.name());
         var newCharacter = this.characterRepository.save(new Character(dto, user));
         return newCharacter.dto();
     }
@@ -38,32 +35,35 @@ public class CharacterService {
     }
     public CharacterResponseDTO executeDetails(Principal principal, Long id) {
         var user = this.userService.getUserByEmail(principal.getName());
-        var character = getChar(id, user.getId());
+        var character = getCharacter(id, user.getId());
         return character.dto();
     }
     @Transactional
     public void executeRemove(Principal principal, Long id) {
         var user = this.userService.getUserByEmail(principal.getName());
-        var character = getChar(id, user.getId());
+        var character = getCharacter(id, user.getId());
         this.characterRepository.delete(character);
     }
     @Transactional
     public CharacterResponseDTO executeChangeName(Principal principal, Long id, CharacterRequestDTO dto) {
         var user = this.userService.getUserByEmail(principal.getName());
-        Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(user.getId(), dto.name());
-        if (checkCharacterNameExists.isPresent()) {
-            throw new AppException("You already have a character with this name");
-        }
-        var character = getChar(id, user.getId());
+        checkCharacterNameExists(user.getId(), dto.name());
+        var character = getCharacter(id, user.getId());
         character.changeName(dto.name());
         var updatedCharacter = this.characterRepository.save(character);
         return updatedCharacter.dto();
     }
-    protected Character getChar(Long id, Long userId) {
+    protected Character getCharacter(Long id, Long userId) {
         Optional<Character> characterOptional = this.characterRepository.findByIdAndUserId(id, userId);
         if (characterOptional.isEmpty()) {
             throw new EntityNotFoundException("Character not found");
         }
         return characterOptional.get();
+    }
+    private void checkCharacterNameExists(Long userId, String name) {
+        Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(userId, name);
+        if (checkCharacterNameExists.isPresent()) {
+            throw new AppException("You already have a character with this name");
+        }
     }
 }

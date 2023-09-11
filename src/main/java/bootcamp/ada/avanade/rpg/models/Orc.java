@@ -1,5 +1,8 @@
 package bootcamp.ada.avanade.rpg.models;
 
+import lombok.Getter;
+
+@Getter
 public class Orc implements CharacterClass {
     private int healthPoints = 42;
     private int strength = 7;

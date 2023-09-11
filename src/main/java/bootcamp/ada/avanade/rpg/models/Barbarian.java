@@ -1,5 +1,8 @@
 package bootcamp.ada.avanade.rpg.models;
 
+import lombok.Getter;
+
+@Getter
 public class Barbarian implements CharacterClass {
     private int healthPoints = 21;
     private int strength = 10;

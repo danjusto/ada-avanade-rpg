@@ -1,5 +1,8 @@
 package bootcamp.ada.avanade.rpg.models;
 
+import lombok.Getter;
+
+@Getter
 public class Giant implements CharacterClass {
     private int healthPoints = 34;
     private int strength = 10;

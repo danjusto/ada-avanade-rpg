@@ -1,5 +1,8 @@
 package bootcamp.ada.avanade.rpg.models;
 
+import lombok.Getter;
+
+@Getter
 public class Knight implements CharacterClass {
     private int healthPoints = 26;
     private int strength = 6;
