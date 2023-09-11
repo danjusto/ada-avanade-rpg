@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -20,14 +22,14 @@ public class UserController {
     public UserResponseDTO create(@RequestBody @Valid UserRequestDTO dto) {
         return this.userService.executeCreate(dto);
     }
-    @PatchMapping("/password/{id}")
+    @PatchMapping("/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@PathVariable Long id, @RequestBody @Valid PasswordRequestDTO dto) {
-        this.userService.executeChangePassword(id, dto);
+    public void changePassword(Principal principal, @RequestBody @Valid PasswordRequestDTO dto) {
+        this.userService.executeChangePassword(principal, dto);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDTO editUser(@PathVariable Long id, @RequestBody @Valid UserRequestDTO dto) {
-        return this.userService.executeEditUser(id, dto);
+    public UserResponseDTO editUser(Principal principal, @RequestBody @Valid UserRequestDTO dto) {
+        return this.userService.executeEditUser(principal, dto);
     }
 }

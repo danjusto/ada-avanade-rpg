@@ -31,9 +31,6 @@ public class User implements UserDetails {
     public void setPassword(String passwordEncoded) {
         this.password = passwordEncoded;
     }
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
-    }
     public void editNameAndEmail(String name, String email) {
         if (name != null) {
             this.name = name;
