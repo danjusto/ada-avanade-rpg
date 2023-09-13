@@ -1,4 +1,4 @@
-package bootcamp.ada.avanade.rpg.models;
+package bootcamp.ada.avanade.rpg.models.characters;
 
 import lombok.Getter;
 

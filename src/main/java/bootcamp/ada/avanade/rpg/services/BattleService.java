@@ -1,10 +1,16 @@
 package bootcamp.ada.avanade.rpg.services;
 
 import bootcamp.ada.avanade.rpg.dto.response.BattleDTO;
+import bootcamp.ada.avanade.rpg.dto.response.BattleDetailsDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
+import bootcamp.ada.avanade.rpg.entities.Character;
+import bootcamp.ada.avanade.rpg.entities.Shift;
+import bootcamp.ada.avanade.rpg.entities.User;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
+import bootcamp.ada.avanade.rpg.repositories.CharacterRepository;
+import bootcamp.ada.avanade.rpg.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -17,43 +23,79 @@ import java.util.Random;
 @Service
 public class BattleService {
     private BattleRepository battleRepository;
-    private CharacterService characterService;
-    private UserService userService;
+    private CharacterRepository characterRepository;
+    private UserRepository userRepository;
     private static Random random;
-    public BattleService(BattleRepository battleRepository, CharacterService characterService, UserService userService) {
+    public BattleService(BattleRepository battleRepository, CharacterRepository characterRepository, UserRepository userRepository) {
         this.battleRepository = battleRepository;
-        this.characterService = characterService;
-        this.userService = userService;
+        this.characterRepository = characterRepository;
+        this.userRepository = userRepository;
     }
     @Transactional
     public BattleDTO executePlay(Principal principal, Long characterId) {
-        var user = this.userService.getUserByEmail(principal.getName());
-        var character = this.characterService.getCharacter(characterId, user.getId());
-        var monster = chooseRandomMonster();
-        var initiative = decideInitiative();
-        var battle = new Battle(monster, initiative, character);
-        var savedBattle = this.battleRepository.save(battle);
-        return savedBattle.dto(character.dto());
+        User user = getUserByEmail(principal.getName());
+        Character character = getCharacter(characterId, user.getId());
+        MonsterClass monster = chooseRandomMonster();
+        Initiative initiative = decideInitiative();
+        Battle battle = new Battle(monster, initiative, character);
+        return this.battleRepository.save(battle).dto(character.dto());
     }
-    protected Battle getBattle(Long id, Long characterId) {
-        Optional<Battle> battle = this.battleRepository.findByIdAndCharacterId(id, characterId);
-        if (battle.isEmpty()) {
-            throw new EntityNotFoundException("Battle not found");
-        }
-        return battle.get();
+    public BattleDetailsDTO executeHistoric(Long characterId, Long battleId) {
+        Battle battle = getBattle(characterId, battleId);
+        return new BattleDetailsDTO(
+                battle.getId(),
+                battle.getCharacter().getCharacterClass(),
+                battle.getCharacter().getName(),
+                battle.getMonster(),
+                battle.getInitiative(),
+                battle.getShifts().stream().map(Shift::dto).toList()
+        );
     }
     private MonsterClass chooseRandomMonster() {
-        int randomNumber = random.nextInt(MonsterClass.values().length);
+        int randomNumber = getRandom().nextInt(MonsterClass.values().length);
         return MonsterClass.values()[randomNumber];
     }
     private Initiative decideInitiative() {
-        int randomNumber = random.nextInt(Initiative.values().length);
-        return Initiative.values()[randomNumber];
+        int diceCharacterInitiative = rollDiceTwenty();
+        int diceMonsterInitiative = rollDiceTwenty();
+        while (diceCharacterInitiative == diceMonsterInitiative) {
+            diceCharacterInitiative = rollDiceTwenty();
+            diceMonsterInitiative = rollDiceTwenty();
+        }
+        if (diceCharacterInitiative > diceMonsterInitiative) {
+            return Initiative.HERO;
+        }
+        return Initiative.MONSTER;
+    }
+    private int rollDiceTwenty() {
+        int min = 1;
+        return getRandom().nextInt(20) + min;
     }
     private static Random getRandom() {
         if(Objects.isNull(random)) {
             random = new Random();
         }
         return random;
+    }
+    private Battle getBattle(Long characterId, Long id) {
+        Optional<Battle> battle = this.battleRepository.findByIdAndCharacterId(id, characterId);
+        if (battle.isEmpty()) {
+            throw new EntityNotFoundException("Battle not found");
+        }
+        return battle.get();
+    }
+    private Character getCharacter(Long id, Long userId) {
+        Optional<Character> characterOptional = this.characterRepository.findByIdAndUserId(id, userId);
+        if (characterOptional.isEmpty()) {
+            throw new EntityNotFoundException("Character not found");
+        }
+        return characterOptional.get();
+    }
+    private User getUserByEmail(String email) {
+        Optional<User> user = this.userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        return user.get();
     }
 }

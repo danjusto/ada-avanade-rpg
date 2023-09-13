@@ -3,7 +3,6 @@ package bootcamp.ada.avanade.rpg.entities;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
 import bootcamp.ada.avanade.rpg.models.CharClass;
-import bootcamp.ada.avanade.rpg.models.CharacterClass;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +35,12 @@ public class Character {
     }
     public void changeName(String newName) {
         this.name = newName;
+    }
+    public void updateVictoriesAndDefeats(Boolean victorie) {
+        if(Boolean.TRUE.equals(victorie)) {
+            this.victories++;
+        } else {
+            this.defeats++;
+        }
     }
 }

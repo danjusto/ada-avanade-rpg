@@ -1,9 +1,10 @@
 package bootcamp.ada.avanade.rpg.controllers;
 
-import bootcamp.ada.avanade.rpg.dto.response.AttackDTO;
-import bootcamp.ada.avanade.rpg.dto.response.BattleDTO;
+import bootcamp.ada.avanade.rpg.dto.request.DamageRequestDTO;
+import bootcamp.ada.avanade.rpg.dto.response.*;
 import bootcamp.ada.avanade.rpg.services.BattleService;
 import bootcamp.ada.avanade.rpg.services.ShiftService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,22 @@ public class GameController {
     }
     @PostMapping("{characterId}/attack/{battleId}")
     @ResponseStatus(HttpStatus.OK)
-    public AttackDTO attack(Principal principal, @PathVariable Long characterId, @PathVariable Long battleId) {
-        return this.shiftService.executeAttack(principal, characterId, battleId);
+    public AttackDTO attack(@PathVariable Long characterId, @PathVariable Long battleId) {
+        return this.shiftService.executeAttack(characterId, battleId);
+    }
+    @PostMapping("{characterId}/defense/{battleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public DefenseDTO defense(@PathVariable Long characterId, @PathVariable Long battleId) {
+        return this.shiftService.executeDefense(characterId, battleId);
+    }
+    @PostMapping("{characterId}/damage/{battleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public DamageResponseDTO calculateDamage(@PathVariable Long characterId, @PathVariable Long battleId, @RequestBody @Valid DamageRequestDTO dto) {
+        return this.shiftService.executeCalculateDamage(characterId, battleId, dto);
+    }
+    @GetMapping("{characterId}/historic/{battleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BattleDetailsDTO historic(@PathVariable Long characterId, @PathVariable Long battleId){
+        return this.battleService.executeHistoric(characterId, battleId);
     }
 }

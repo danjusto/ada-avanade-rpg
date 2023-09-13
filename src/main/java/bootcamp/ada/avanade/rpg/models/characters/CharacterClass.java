@@ -1,4 +1,4 @@
-package bootcamp.ada.avanade.rpg.models;
+package bootcamp.ada.avanade.rpg.models.characters;
 
 public interface CharacterClass {
     int getStrength();

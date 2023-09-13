@@ -28,8 +28,7 @@ public class UserService {
         checkUserWithEmailExists(dto.email());
         var user = new User(dto);
         user.setPassword(this.passwordEncoder.encode(dto.password()));
-        var newRegisteredUser = this.userRepository.save(user);
-        return newRegisteredUser.dto();
+        return this.userRepository.save(user).dto();
     }
     @Transactional
     public void executeChangePassword(Principal principal, PasswordRequestDTO dto) {
@@ -47,10 +46,9 @@ public class UserService {
             throw new PasswordException("Password not match");
         }
         user.editNameAndEmail(dto.name(), dto.email());
-        var updatedUser = userRepository.save(user);
-        return updatedUser.dto();
+        return userRepository.save(user).dto();
     }
-    protected User getUserByEmail(String email) {
+    private User getUserByEmail(String email) {
         Optional<User> user = this.userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");

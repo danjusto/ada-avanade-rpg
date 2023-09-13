@@ -1,4 +1,4 @@
 package bootcamp.ada.avanade.rpg.dto.response;
 
-public record AttackDTO(Boolean hit, int diceAtkHero, int diceDefMonster, int avgAtkHero, int avgDefMonster) {
+public record AttackDTO(Long shiftId, Boolean hit, int diceAtkHero, int diceDefMonster) {
 }
