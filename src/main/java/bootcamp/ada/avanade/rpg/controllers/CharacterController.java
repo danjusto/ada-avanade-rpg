@@ -3,6 +3,7 @@ package bootcamp.ada.avanade.rpg.controllers;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
 import bootcamp.ada.avanade.rpg.services.CharacterService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/character")
+@SecurityRequirement(name = "bearer-key")
 public class CharacterController {
     private CharacterService characterService;
     public CharacterController(CharacterService characterService) {

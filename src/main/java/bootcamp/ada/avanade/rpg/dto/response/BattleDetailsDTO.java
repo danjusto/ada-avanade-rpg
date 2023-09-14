@@ -8,6 +8,7 @@ import java.util.List;
 
 public record BattleDetailsDTO(
         Long battleId,
+        Long characterId,
         CharClass characterClass,
         String characterName,
         MonsterClass monsterClass,

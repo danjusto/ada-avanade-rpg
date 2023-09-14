@@ -4,6 +4,7 @@ import bootcamp.ada.avanade.rpg.dto.request.PasswordRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
 import bootcamp.ada.avanade.rpg.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,11 +31,13 @@ public class UserController {
     }
     @PatchMapping("/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @SecurityRequirement(name = "bearer-key")
     public void changePassword(Principal principal, @RequestBody @Valid PasswordRequestDTO dto) {
         this.userService.executeChangePassword(principal, dto);
     }
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearer-key")
     public UserResponseDTO editUser(Principal principal, @RequestBody @Valid UserRequestDTO dto) {
         return this.userService.executeEditUser(principal, dto);
     }

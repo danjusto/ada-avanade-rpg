@@ -9,6 +9,7 @@ import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.dto.response.DefenseDTO;
 import bootcamp.ada.avanade.rpg.services.BattleService;
 import bootcamp.ada.avanade.rpg.services.ShiftService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/battle")
+@SecurityRequirement(name = "bearer-key")
 public class GameController {
     private BattleService battleService;
     private ShiftService shiftService;

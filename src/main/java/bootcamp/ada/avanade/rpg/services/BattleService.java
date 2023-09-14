@@ -44,6 +44,7 @@ public class BattleService {
         Battle battle = getBattle(characterId, battleId);
         return new BattleDetailsDTO(
                 battle.getId(),
+                battle.getCharacter().getId(),
                 battle.getCharacter().getCharacterClass(),
                 battle.getCharacter().getName(),
                 battle.getMonster(),
