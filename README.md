@@ -2,12 +2,12 @@
 API para jogar e se divertir no fascinante mundo de Dungeons & Dragons.
 
 ## 📜 Sumário
-1. [Detalhes do projeto](https://github.com/DanJusto/API-ControleEstoque#1--detalhes-do-projeto)
-2. [Para rodar o projeto](https://github.com/DanJusto/API-ControleEstoque#2--para-rodar-o-projeto)
-3. [Documentação](https://github.com/DanJusto/API-ControleEstoque#3--documenta%C3%A7%C3%A3o)
-4. [Fluxos](https://github.com/DanJusto/API-ControleEstoque#4--fluxos)
-5. [Tecnologias usadas](https://github.com/DanJusto/API-ControleEstoque#5--tecnologias-usadas)
-6. [Autor](https://github.com/DanJusto/API-ControleEstoque#6--autor)
+1. [Detalhes do projeto](https://github.com/DanJusto/ada-avanade-rpg#1--detalhes-do-projeto)
+2. [Para rodar o projeto](https://github.com/DanJusto/ada-avanade-rpg#2--para-rodar-o-projeto)
+3. [Documentação](https://github.com/DanJusto/ada-avanade-rpg#3--documenta%C3%A7%C3%A3o)
+4. [Fluxos](https://github.com/DanJusto/ada-avanade-rpg#4--fluxos)
+5. [Tecnologias usadas](https://github.com/DanJusto/ada-avanade-rpg#5--tecnologias-usadas)
+6. [Autor](https://github.com/DanJusto/ada-avanade-rpg#6--autor)
 
 ## 1. 🔍 Detalhes do projeto
 A API RPG-D&D tem como objetivo controlar o fluxo de um jogo de RPG e persistir dados. Foi realizado academicamente durante o Bootcamp Java Academy, iniciativa da Ada em parceria com a Avanade.
