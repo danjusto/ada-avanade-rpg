@@ -7,8 +7,11 @@ import bootcamp.ada.avanade.rpg.dto.response.BattleDTO;
 import bootcamp.ada.avanade.rpg.dto.response.BattleDetailsDTO;
 import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.dto.response.DefenseDTO;
-import bootcamp.ada.avanade.rpg.services.BattleService;
-import bootcamp.ada.avanade.rpg.services.ShiftService;
+import bootcamp.ada.avanade.rpg.services.battle_usecases.HistoricBattle;
+import bootcamp.ada.avanade.rpg.services.battle_usecases.PlayBattle;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.Attack;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.CalculateDamage;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.Defense;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -26,35 +29,41 @@ import java.security.Principal;
 @RequestMapping("/battle")
 @SecurityRequirement(name = "bearer-key")
 public class GameController {
-    private BattleService battleService;
-    private ShiftService shiftService;
-    public GameController(BattleService battleService, ShiftService shiftService) {
-        this.battleService = battleService;
-        this.shiftService = shiftService;
+    private PlayBattle playBattle;
+    private HistoricBattle historicBattle;
+    private Attack attack;
+    private Defense defense;
+    private CalculateDamage calculateDamage;
+    public GameController(PlayBattle playBattle, HistoricBattle historicBattle, Attack attack, Defense defense, CalculateDamage calculateDamage) {
+        this.playBattle = playBattle;
+        this.historicBattle = historicBattle;
+        this.attack = attack;
+        this.calculateDamage = calculateDamage;
+        this.defense = defense;
     }
     @PostMapping("{characterId}/play")
     @ResponseStatus(HttpStatus.OK)
     public BattleDTO play(Principal principal, @PathVariable Long characterId) {
-        return this.battleService.executePlay(principal, characterId);
+        return this.playBattle.execute(principal, characterId);
     }
     @PostMapping("{characterId}/attack/{battleId}")
     @ResponseStatus(HttpStatus.OK)
     public AttackDTO attack(@PathVariable Long characterId, @PathVariable Long battleId) {
-        return this.shiftService.executeAttack(characterId, battleId);
+        return this.attack.execute(characterId, battleId);
     }
     @PostMapping("{characterId}/defense/{battleId}")
     @ResponseStatus(HttpStatus.OK)
     public DefenseDTO defense(@PathVariable Long characterId, @PathVariable Long battleId) {
-        return this.shiftService.executeDefense(characterId, battleId);
+        return this.defense.execute(characterId, battleId);
     }
     @PostMapping("{characterId}/damage/{battleId}")
     @ResponseStatus(HttpStatus.OK)
     public DamageResponseDTO calculateDamage(@PathVariable Long characterId, @PathVariable Long battleId, @RequestBody @Valid DamageRequestDTO dto) {
-        return this.shiftService.executeCalculateDamage(characterId, battleId, dto);
+        return this.calculateDamage.execute(characterId, battleId, dto);
     }
     @GetMapping("{characterId}/historic/{battleId}")
     @ResponseStatus(HttpStatus.OK)
     public BattleDetailsDTO historic(@PathVariable Long characterId, @PathVariable Long battleId){
-        return this.battleService.executeHistoric(characterId, battleId);
+        return this.historicBattle.execute(characterId, battleId);
     }
 }

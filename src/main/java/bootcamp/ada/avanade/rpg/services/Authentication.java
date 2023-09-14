@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AuthenticationService implements UserDetailsService {
+public class Authentication implements UserDetailsService {
     private UserRepository userRepository;
-    public AuthenticationService(UserRepository userRepository) {
+    public Authentication(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     @Override

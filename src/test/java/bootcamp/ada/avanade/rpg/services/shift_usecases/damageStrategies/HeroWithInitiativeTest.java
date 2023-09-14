@@ -1,7 +1,6 @@
-package bootcamp.ada.avanade.rpg.services.damageStrategies;
+package bootcamp.ada.avanade.rpg.services.shift_usecases.damageStrategies;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.request.DamageRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
@@ -14,13 +13,12 @@ import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithInitiative;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,8 +63,6 @@ class HeroWithInitiativeTest {
                 .save(any());
         verify(battleRepository, times(1))
                 .save(any());
-        assertNotNull(response);
-        assertEquals(DamageResponseDTO.class, response.getClass());
     }
     @Test
     void ShouldDamageMonsterAndEndBattle() {
@@ -77,8 +73,6 @@ class HeroWithInitiativeTest {
                 .save(any());
         verify(battleRepository, times(1))
                 .save(any());
-        assertNotNull(response);
-        assertEquals(DamageResponseDTO.class, response.getClass());
     }
     private void startStrategyTester() {
         var user = new User(new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678"));

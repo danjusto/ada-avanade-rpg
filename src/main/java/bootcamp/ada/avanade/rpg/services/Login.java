@@ -8,10 +8,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService {
+public class Login {
     private AuthenticationManager authManager;
     private JwtService jwtService;
-    public LoginService(AuthenticationManager authManager, JwtService jwtService) {
+    public Login(AuthenticationManager authManager, JwtService jwtService) {
         this.authManager = authManager;
         this.jwtService = jwtService;
     }

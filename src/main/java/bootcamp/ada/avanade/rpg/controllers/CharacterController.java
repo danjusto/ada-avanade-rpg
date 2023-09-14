@@ -3,7 +3,11 @@ package bootcamp.ada.avanade.rpg.controllers;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
-import bootcamp.ada.avanade.rpg.services.CharacterService;
+import bootcamp.ada.avanade.rpg.services.character_usecases.ChangeNameCharacter;
+import bootcamp.ada.avanade.rpg.services.character_usecases.CreateCharacter;
+import bootcamp.ada.avanade.rpg.services.character_usecases.DetailCharacter;
+import bootcamp.ada.avanade.rpg.services.character_usecases.ListCharacters;
+import bootcamp.ada.avanade.rpg.services.character_usecases.RemoveCharacter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -26,33 +30,41 @@ import java.security.Principal;
 @RequestMapping("/character")
 @SecurityRequirement(name = "bearer-key")
 public class CharacterController {
-    private CharacterService characterService;
-    public CharacterController(CharacterService characterService) {
-        this.characterService = characterService;
+    private CreateCharacter createCharacter;
+    private ListCharacters listCharacters;
+    private DetailCharacter detailCharacter;
+    private ChangeNameCharacter changeNameCharacter;
+    private RemoveCharacter removeCharacter;
+    public CharacterController(CreateCharacter createCharacter, ListCharacters listCharacters, DetailCharacter detailCharacter, ChangeNameCharacter changeNameCharacter, RemoveCharacter removeCharacter) {
+        this.createCharacter = createCharacter;
+        this.listCharacters = listCharacters;
+        this.changeNameCharacter = changeNameCharacter;
+        this.detailCharacter = detailCharacter;
+        this.removeCharacter = removeCharacter;
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CharacterDetailsResponseDTO create(Principal user, @RequestBody @Valid CharacterRequestDTO dto) {
-        return this.characterService.executeCreate(user, dto);
+        return this.createCharacter.execute(user, dto);
     }
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Page<CharacterListDTO> list(Principal user, @PageableDefault(sort={"id"}) Pageable pagination) {
-        return this.characterService.executeList(user, pagination);
+        return this.listCharacters.execute(user, pagination);
     }
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public CharacterDetailsResponseDTO details(Principal user, @PathVariable Long id) {
-        return this.characterService.executeDetails(user, id);
+        return this.detailCharacter.execute(user, id);
     }
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(Principal user, @PathVariable Long id) {
-        this.characterService.executeRemove(user, id);
+        this.removeCharacter.execute(user, id);
     }
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public CharacterDetailsResponseDTO changeName(Principal user, @PathVariable Long id, @RequestBody @Valid CharacterRequestDTO dto) {
-        return this.characterService.executeChangeName(user, id, dto);
+        return this.changeNameCharacter.execute(user, id, dto);
     }
 }

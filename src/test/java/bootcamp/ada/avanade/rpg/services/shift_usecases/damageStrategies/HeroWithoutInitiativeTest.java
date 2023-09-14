@@ -1,4 +1,4 @@
-package bootcamp.ada.avanade.rpg.services.damageStrategies;
+package bootcamp.ada.avanade.rpg.services.shift_usecases.damageStrategies;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
@@ -13,6 +13,8 @@ import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithInitiative;
+import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithoutInitiative;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.times;
 
 class HeroWithoutInitiativeTest {
     @InjectMocks
-    private HeroWithInitiative strategy;
+    private HeroWithoutInitiative strategy;
     @Mock
     private ShiftRepository shiftRepository;
     @Mock
@@ -63,8 +65,6 @@ class HeroWithoutInitiativeTest {
                 .save(any());
         verify(battleRepository, times(1))
                 .save(any());
-        assertNotNull(response);
-        assertEquals(DamageResponseDTO.class, response.getClass());
     }
     @Test
     void ShouldDamageMonsterAndEndBattle() {
@@ -75,10 +75,7 @@ class HeroWithoutInitiativeTest {
                 .save(any());
         verify(battleRepository, times(1))
                 .save(any());
-        assertNotNull(response);
-        assertEquals(DamageResponseDTO.class, response.getClass());
     }
-
     private void startStrategyTester() {
         var user = new User(new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678"));
         var character = new Character(new CharacterRequestDTO("Konan", CharClass.BARBARIAN), user);

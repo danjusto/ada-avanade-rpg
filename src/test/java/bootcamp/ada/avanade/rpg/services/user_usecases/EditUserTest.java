@@ -1,8 +1,7 @@
-package bootcamp.ada.avanade.rpg.services;
+package bootcamp.ada.avanade.rpg.services.user_usecases;
 
 import bootcamp.ada.avanade.rpg.dto.request.EditUserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.User;
 import bootcamp.ada.avanade.rpg.exception.AppException;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
@@ -18,11 +17,12 @@ import java.security.Principal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
-    @InjectMocks
-    private UserService service;
+class EditUserTest {
+    @InjectMocks EditUser useCase;
     @Mock
     private UserRepository repository;
     @Mock
@@ -30,9 +30,7 @@ class UserServiceTest {
     private User user;
     private Principal principal;
     private Optional<User> userOptional;
-    private UserRequestDTO requestDTO;
     private EditUserRequestDTO editRequestDTO;
-
 
     @BeforeEach
     void setUp() {
@@ -40,48 +38,27 @@ class UserServiceTest {
         startUserTester();
     }
     @Test
-    void ShouldReturnUserDtoAfterCreate() {
-        when(repository.findByUsername(anyString())).thenReturn(Optional.empty());
-        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(repository.save(any())).thenReturn(user);
-        var response = assertDoesNotThrow(()->service.executeCreate(requestDTO));
-        verify(repository, times(1))
-                .save(any());
-        assertNotNull(response);
-        assertEquals(UserResponseDTO.class, response.getClass());
-    }
-    @Test
-    void ShouldThrowErrorBecauseUsernameAlreadyExist() {
+    void ShouldCompleteFlowWithoutException() {
         when(repository.findByUsername(anyString())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> service.executeCreate(requestDTO));
-        assertEquals("Username already in use", appException.getMessage());
-        verify(repository, never())
-                .findByEmail(any());
-        verify(repository, never())
-                .save(any());
-    }
-    @Test
-    void ShouldThrowErrorBecauseEmailAlreadyExist() {
-        when(repository.findByUsername(anyString())).thenReturn(Optional.empty());
-        when(repository.findByEmail(anyString())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> service.executeCreate(requestDTO));
-        assertEquals("Email already in use", appException.getMessage());
-        verify(repository, never())
+        when(repository.findByEmailAndIdNot(any(), any())).thenReturn(Optional.empty());
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(repository.save(any())).thenReturn(user);
+        assertDoesNotThrow(()->useCase.execute(principal, editRequestDTO));
+        verify(repository, times(1))
                 .save(any());
     }
     @Test
     void ShouldThrowErrorBecauseEmailAlreadyExistOnEdit() {
         when(repository.findByUsername(anyString())).thenReturn(userOptional);
         when(repository.findByEmailAndIdNot(anyString(), any())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> service.executeEditUser(principal, editRequestDTO));
+        AppException appException = assertThrows(AppException.class, () -> useCase.execute(principal, editRequestDTO));
         assertEquals("Email already in use", appException.getMessage());
         verify(repository, never())
                 .save(any());
     }
     private void startUserTester() {
-        this.requestDTO = new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678");
         this.editRequestDTO = new EditUserRequestDTO("Tester Edited", "tester.edited@email.com", "12345678");
-        this.user = new User(this.requestDTO);
+        this.user = new User(new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678"));
         this.user.setPassword("12345678");
         this.userOptional = Optional.of(this.user);
         this.principal = () -> "tester";

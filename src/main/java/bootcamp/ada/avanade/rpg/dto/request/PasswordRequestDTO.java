@@ -3,7 +3,7 @@ package bootcamp.ada.avanade.rpg.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record PasswordRequestDTO(
+public record PasswordRequestDTO (
         @NotBlank
         String password,
         @NotBlank

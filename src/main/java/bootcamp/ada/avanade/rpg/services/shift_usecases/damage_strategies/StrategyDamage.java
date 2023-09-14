@@ -1,4 +1,4 @@
-package bootcamp.ada.avanade.rpg.services.damageStrategies;
+package bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies;
 
 import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
