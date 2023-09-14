@@ -3,7 +3,7 @@ package bootcamp.ada.avanade.rpg.services.user_usecases;
 import bootcamp.ada.avanade.rpg.dto.request.EditUserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyInUseException;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
 import bootcamp.ada.avanade.rpg.services.UserService;
 import jakarta.transaction.Transactional;
@@ -29,7 +29,7 @@ public class EditUser extends UserService {
     private void checkIfEmailIsAvaibleForChange(String email, Long id) {
         Optional<User> checkUserExists = this.userRepository.findByEmailAndIdNot(email, id);
         if (checkUserExists.isPresent()) {
-            throw new AppException("Email already in use");
+            throw new AlreadyInUseException("Email already in use");
         }
     }
 }

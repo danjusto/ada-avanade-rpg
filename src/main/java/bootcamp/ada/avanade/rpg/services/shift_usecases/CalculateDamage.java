@@ -4,7 +4,7 @@ import bootcamp.ada.avanade.rpg.dto.request.DamageRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Shift;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyEndedException;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
@@ -53,7 +53,7 @@ public class CalculateDamage extends ShiftService {
     private Shift getShiftAndCheckIfEnded(Long id) {
         Optional<Shift> shiftOptional = this.shiftRepository.findByIdAndActiveTrue(id);
         if (shiftOptional.isEmpty()) {
-            throw new AppException("Shift has ended");
+            throw new AlreadyEndedException("Shift has ended");
         }
         return shiftOptional.get();
     }

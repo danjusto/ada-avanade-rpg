@@ -38,9 +38,21 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handlePasswordException(PasswordException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(ex.getMessage()));
     }
-    @ExceptionHandler(AppException.class)
-    public ResponseEntity<Object> handleAppException(AppException ex) {
+    @ExceptionHandler(PlayBookException.class)
+    public ResponseEntity<Object> handleAppException(PlayBookException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDTO(ex.getMessage()));
+    }
+    @ExceptionHandler(AlreadyEndedException.class)
+    public ResponseEntity<Object> handleAlreadyEndedException(AlreadyEndedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDTO(ex.getMessage()));
+    }
+    @ExceptionHandler(AlreadyInUseException.class)
+    public ResponseEntity<Object> handleAlreadyInUseException(AlreadyInUseException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDTO(ex.getMessage()));
+    }
+    @ExceptionHandler(ValidateActionException.class)
+    public ResponseEntity<Object> handleValidateActionException(ValidateActionException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(ex.getMessage()));
     }
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {

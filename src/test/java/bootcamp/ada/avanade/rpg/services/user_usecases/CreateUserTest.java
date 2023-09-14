@@ -2,7 +2,8 @@ package bootcamp.ada.avanade.rpg.services.user_usecases;
 
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyInUseException;
+import bootcamp.ada.avanade.rpg.exception.PlayBookException;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,8 +48,8 @@ class CreateUserTest {
     @Test
     void ShouldThrowErrorBecauseUsernameAlreadyExist() {
         when(repository.findByUsername(anyString())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> useCase.execute(requestDTO));
-        assertEquals("Username already in use", appException.getMessage());
+        AlreadyInUseException exception = assertThrows(AlreadyInUseException.class, () -> useCase.execute(requestDTO));
+        assertEquals("Username already in use", exception.getMessage());
         verify(repository, never())
                 .findByEmail(any());
         verify(repository, never())
@@ -58,8 +59,8 @@ class CreateUserTest {
     void ShouldThrowErrorBecauseEmailAlreadyExist() {
         when(repository.findByUsername(anyString())).thenReturn(Optional.empty());
         when(repository.findByEmail(anyString())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> useCase.execute(requestDTO));
-        assertEquals("Email already in use", appException.getMessage());
+        AlreadyInUseException exception  = assertThrows(AlreadyInUseException.class, () -> useCase.execute(requestDTO));
+        assertEquals("Email already in use", exception.getMessage());
         verify(repository, never())
                 .save(any());
     }

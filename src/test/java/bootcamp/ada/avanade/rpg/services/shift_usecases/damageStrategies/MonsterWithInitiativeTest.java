@@ -2,12 +2,12 @@ package bootcamp.ada.avanade.rpg.services.shift_usecases.damageStrategies;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.Shift;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.PlayBookException;
+import bootcamp.ada.avanade.rpg.exception.ValidateActionException;
 import bootcamp.ada.avanade.rpg.models.CharClass;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
@@ -47,12 +47,12 @@ class MonsterWithInitiativeTest {
     }
     @Test
     void ShouldThrowExceptionForMissedAttack() {
-        AppException exception = assertThrows(AppException.class, () -> strategy.execute(battle, shiftMissAtk));
+        PlayBookException exception = assertThrows(PlayBookException.class, () -> strategy.execute(battle, shiftMissAtk));
         assertEquals("Monster missed attack", exception.getMessage());
     }
     @Test
     void ShouldThrowExceptionForDuplicateDamage() {
-        AppException exception = assertThrows(AppException.class, () -> strategy.execute(battle, shiftDamage));
+        ValidateActionException exception = assertThrows(ValidateActionException.class, () -> strategy.execute(battle, shiftDamage));
         assertEquals("Damage already registered", exception.getMessage());
     }
     @Test

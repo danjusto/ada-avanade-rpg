@@ -1,25 +1,19 @@
 package bootcamp.ada.avanade.rpg.services.shift_usecases;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.request.DamageRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.AttackDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.Shift;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyEndedException;
+import bootcamp.ada.avanade.rpg.exception.PlayBookException;
 import bootcamp.ada.avanade.rpg.models.CharClass;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
 import bootcamp.ada.avanade.rpg.models.validations.attack.ValidateAttack;
-import bootcamp.ada.avanade.rpg.models.validations.defense.ValidateDefense;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
-import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithInitiative;
-import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithoutInitiative;
-import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.MonsterWithInitiative;
-import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.MonsterWithoutInitiative;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +72,7 @@ class AttackTest {
     @Test
     void ShouldThrowErrorBecauseBattleHasEnded() {
         when(battleRepository.findByIdAndCharacterId(anyLong(), anyLong())).thenReturn(endedBattleOptional);
-        AppException exception = assertThrows(AppException.class, () -> useCase.execute(anyLong(), anyLong()));
+        AlreadyEndedException exception = assertThrows(AlreadyEndedException.class, () -> useCase.execute(anyLong(), anyLong()));
         assertEquals("This battle already ended", exception.getMessage());
         verify(shiftRepository, never())
                 .findByBattleIdAndActiveTrue(any());

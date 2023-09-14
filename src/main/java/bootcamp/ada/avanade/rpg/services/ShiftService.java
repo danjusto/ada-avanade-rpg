@@ -3,7 +3,7 @@ package bootcamp.ada.avanade.rpg.services;
 import bootcamp.ada.avanade.rpg.dto.HealthPoints;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Shift;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyEndedException;
 import bootcamp.ada.avanade.rpg.models.Turn;
 import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
@@ -39,7 +39,7 @@ public abstract class ShiftService {
             throw new EntityNotFoundException("Battle not found");
         }
         if (Boolean.FALSE.equals(battleOptional.get().getActive())) {
-            throw new AppException("This battle already ended");
+            throw new AlreadyEndedException("This battle already ended");
         }
         return battleOptional.get();
     }

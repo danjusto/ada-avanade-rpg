@@ -4,7 +4,8 @@ import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyInUseException;
+import bootcamp.ada.avanade.rpg.exception.PlayBookException;
 import bootcamp.ada.avanade.rpg.models.CharClass;
 import bootcamp.ada.avanade.rpg.repositories.CharacterRepository;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
@@ -65,8 +66,8 @@ class CreateCharacterTest {
     void ShouldThrowErrorBecauseCharacterNameAlreadyExist() {
         when(userRepository.findByUsername(anyString())).thenReturn(userOptional);
         when(characterRepository.findByUserIdAndName(any(), anyString())).thenReturn(characterOptional);
-        AppException appException = assertThrows(AppException.class, () -> useCase.execute(principal, requestDTO));
-        assertEquals("You already have a character with this name", appException.getMessage());
+        AlreadyInUseException exception = assertThrows(AlreadyInUseException.class, () -> useCase.execute(principal, requestDTO));
+        assertEquals("You already have a character with this name", exception.getMessage());
         verify(characterRepository, never())
                 .save(any());
     }

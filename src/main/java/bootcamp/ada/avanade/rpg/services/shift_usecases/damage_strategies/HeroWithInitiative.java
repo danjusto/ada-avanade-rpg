@@ -3,7 +3,8 @@ package bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies;
 import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Shift;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.PlayBookException;
+import bootcamp.ada.avanade.rpg.exception.ValidateActionException;
 import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
@@ -32,13 +33,13 @@ public class HeroWithInitiative extends Damage implements StrategyDamage {
     @Override
     protected void confirmHit(Battle battle, Shift shift) {
         if (Boolean.FALSE.equals(shift.getCharacterHit())) {
-            throw new AppException("Character missed attack");
+            throw new PlayBookException("Character missed attack");
         }
     }
     @Override
     protected void checkDuplicateDamage(Shift shift) {
         if (shift.getDamageCharacter() != 0) {
-            throw new AppException("Damage already registered");
+            throw new ValidateActionException("Damage already registered");
         }
     }
     @Override

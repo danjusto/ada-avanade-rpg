@@ -1,20 +1,13 @@
 package bootcamp.ada.avanade.rpg.services;
 
-import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.User;
-import bootcamp.ada.avanade.rpg.exception.AppException;
+import bootcamp.ada.avanade.rpg.exception.AlreadyInUseException;
 import bootcamp.ada.avanade.rpg.repositories.CharacterRepository;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -42,7 +35,7 @@ public abstract class CharacterService {
     protected void checkCharacterNameExists(Long userId, String name) {
         Optional<Character> checkCharacterNameExists = this.characterRepository.findByUserIdAndName(userId, name);
         if (checkCharacterNameExists.isPresent()) {
-            throw new AppException("You already have a character with this name");
+            throw new AlreadyInUseException("You already have a character with this name");
         }
     }
 }
