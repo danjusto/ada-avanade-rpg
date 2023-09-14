@@ -21,7 +21,7 @@ public class HeroWithInitiative extends HeroDamage implements StrategyDamage {
         CharacterClass heroStats = battle.getCharacterClass();
         int diceDamage = rollCustomDice(heroStats.getDiceFaces(), heroStats.getDiceQty());
         shift.updateCharacterDmgAndMonsterHP(diceDamage);
-        if (shift.getPvMonster() == 0) {
+        if (shift.getHpMonster() == 0) {
             endBattle(battle, shift, true);
         }
         return saveBattleAndShift(battle, shift);

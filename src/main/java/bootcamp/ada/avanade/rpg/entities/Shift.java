@@ -33,17 +33,17 @@ public class Shift {
     private Boolean monsterHit;
     private int damageCharacter;
     private int damageMonster;
-    private int pvCharacter;
-    private int pvMonster;
+    private int hpCharacter;
+    private int hpMonster;
     private Boolean active;
     @ManyToOne
     @JoinColumn(name = "battle_id")
     private Battle battle;
-    public void initialize(Battle battle, int pvCharacter, int pvMonster) {
+    public void initialize(Battle battle, int hpCharacter, int hpMonster) {
         this.round = battle.getNumberShifts();
         this.battle = battle;
-        this.pvCharacter = pvCharacter;
-        this.pvMonster = pvMonster;
+        this.hpCharacter = hpCharacter;
+        this.hpMonster = hpMonster;
         this.active = true;
     }
     public void updateAtk(int diceAtk, int diceDef, Boolean hit) {
@@ -58,11 +58,11 @@ public class Shift {
     }
     public void updateCharacterDmgAndMonsterHP(int diceDamage) {
         this.damageCharacter = diceDamage;
-        this.pvMonster = Math.max(this.pvMonster - diceDamage, 0);
+        this.hpMonster = Math.max(this.hpMonster - diceDamage, 0);
     }
     public void updateMonsterDmgAndCharacterHP(int diceDamage) {
         this.damageMonster = diceDamage;
-        this.pvCharacter = Math.max(this.pvCharacter - diceDamage, 0);
+        this.hpCharacter = Math.max(this.hpCharacter - diceDamage, 0);
     }
     public ShiftDTO dto() {
         return new ShiftDTO(
@@ -75,8 +75,8 @@ public class Shift {
                 this.monsterHit,
                 this.damageCharacter,
                 this.damageMonster,
-                this.pvCharacter,
-                this.pvMonster
+                this.hpCharacter,
+                this.hpMonster
         );
     }
     public AttackDTO attackCharacterDTO() {
@@ -86,9 +86,9 @@ public class Shift {
         return new DefenseDTO(this.id, this.monsterHit, this.diceDefCharacter, this.diceAtkMonster);
     }
     public DamageResponseDTO damageCharacterDTO() {
-        return new DamageResponseDTO(this.id, this.damageCharacter, this.pvMonster);
+        return new DamageResponseDTO(this.id, this.damageCharacter, this.hpMonster);
     }
     public DamageResponseDTO damageMonsterDTO() {
-        return new DamageResponseDTO(this.id, this.damageMonster, this.pvCharacter);
+        return new DamageResponseDTO(this.id, this.damageMonster, this.hpCharacter);
     }
 }

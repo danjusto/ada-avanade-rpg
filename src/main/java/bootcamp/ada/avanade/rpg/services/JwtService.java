@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private static SecretKey jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final SecretKey jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     public String generateToken(String username) {
         var now = LocalDateTime.now();
         var expiration = now.plusHours(12);

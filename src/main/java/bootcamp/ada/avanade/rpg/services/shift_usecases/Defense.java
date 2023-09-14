@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class Defense extends ShiftService {
-    private List<ValidateDefense> validateDefense;
+    private final List<ValidateDefense> validateDefense;
     public Defense(ShiftRepository shiftRepository, BattleRepository battleRepository, List<ValidateDefense> validateDefense) {
         super(shiftRepository, battleRepository);
         this.validateDefense = validateDefense;

@@ -68,7 +68,7 @@ public abstract class ShiftService {
             CharacterClass monster = battle.getMonsterClass();
             return new HealthPoints(hero.getHealthPoints(), monster.getHealthPoints());
         }
-        return new HealthPoints(shiftOptional.get().getPvCharacter(), shiftOptional.get().getPvMonster());
+        return new HealthPoints(shiftOptional.get().getHpCharacter(), shiftOptional.get().getHpMonster());
     }
     private static Random getRandom() {
         if(Objects.isNull(random)) {

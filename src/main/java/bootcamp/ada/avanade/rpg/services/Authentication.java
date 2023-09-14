@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class Authentication implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     public Authentication(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

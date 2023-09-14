@@ -23,9 +23,9 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private CreateUser createUser;
-    private ChangePassword changePassword;
-    private EditUser editUser;
+    private final CreateUser createUser;
+    private final ChangePassword changePassword;
+    private final EditUser editUser;
     public UserController(CreateUser createUser, ChangePassword changePassword, EditUser editUser) {
         this.createUser = createUser;
         this.changePassword = changePassword;

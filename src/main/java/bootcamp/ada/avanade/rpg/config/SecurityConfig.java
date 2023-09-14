@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private AuthenticationFilter authenticationFilter;
+    private final AuthenticationFilter authenticationFilter;
     public SecurityConfig(AuthenticationFilter authenticationFilter) {
         this.authenticationFilter = authenticationFilter;
     }
@@ -45,7 +45,6 @@ public class SecurityConfig {
         try {
             return authConfig.getAuthenticationManager();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

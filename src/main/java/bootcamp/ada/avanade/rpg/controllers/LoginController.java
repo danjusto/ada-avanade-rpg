@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    private Login login;
+    private final Login login;
     public LoginController(Login service) {
         this.login = service;
     }

@@ -12,7 +12,7 @@ public record UserRequestDTO(
         @Size(min = 6, message = "The username must have at least 6 characters")
         String username,
         @Email
-        @NotNull
+        @NotNull(message = "must not be null")
         String email,
         @NotBlank
         @Size(min = 8, message = "The password must have at least 8 characters")

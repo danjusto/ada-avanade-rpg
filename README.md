@@ -3,9 +3,11 @@ API para jogar e se divertir no fascinante mundo de Dungeons & Dragons.
 
 ## 📜 Sumário
 1. [Detalhes do projeto](https://github.com/DanJusto/API-ControleEstoque#1--detalhes-do-projeto)
-2. [Para rodar o projeto](https://github.com/DanJusto/API-ControleEstoque#3--para-rodar-o-projeto)
-3. [Documentação](https://github.com/DanJusto/API-ControleEstoque#4--documenta%C3%A7%C3%A3o)
-4. [Autor](https://github.com/DanJusto/API-ControleEstoque#5--autor)
+2. [Para rodar o projeto](https://github.com/DanJusto/API-ControleEstoque#2--para-rodar-o-projeto)
+3. [Documentação](https://github.com/DanJusto/API-ControleEstoque#3--documenta%C3%A7%C3%A3o)
+4. [Fluxos](https://github.com/DanJusto/API-ControleEstoque#4--fluxos)
+5. [Tecnologias usadas](https://github.com/DanJusto/API-ControleEstoque#5--tecnologias-usadas)
+6. [Autor](https://github.com/DanJusto/API-ControleEstoque#6--autor)
 
 ## 1. 🔍 Detalhes do projeto
 A API RPG-D&D tem como objetivo controlar o fluxo de um jogo de RPG e persistir dados. Foi realizado academicamente durante o Bootcamp Java Academy, iniciativa da Ada em parceria com a Avanade.
@@ -74,7 +76,9 @@ A API RPG-D&D tem como objetivo controlar o fluxo de um jogo de RPG e persistir 
 [`POST /battle/:characterId/damage/:battleId`](#post-damage) - Apuração do dano <br/>
 [`GET /battle/:characterId/historic/:battleId`](#get-historic) - Detalhamento de uma batalha e seus turnos
 
-###
+<details>
+<summary><b>Autenticação de usuário</b></summary>
+
 #### POST login
 
 Logar com um usuário por meio de `username` e `password`. Retorna um token JWT para ser utilizado nas requisições.
@@ -116,9 +120,11 @@ Erro comum
 }
 ```
 ```status: 401```
+</details>
 <br/>
+<details>
+<summary><b>Criação de um novo usuário</b></summary>
 
-###
 #### POST user
 
 Criar um usuário para poder utilizar a API e jogar D&D.
@@ -197,9 +203,11 @@ Erros comuns
 ]
 ```
 ```status: 400```
+</details>
 <br/>
+<details>
+<summary><b>Alterar nome ou e-mail do usuário</b></summary>
 
-###
 #### PATCH user
 
 **Request**
@@ -270,9 +278,11 @@ Erros comuns
 ]
 ```
 ```status: 400```
+</details>
 <br/>
+<details>
+<summary><b>Alterar password do usuário</b></summary>
 
-###
 #### PATCH user-password
 
 **Request**
@@ -330,8 +340,11 @@ Erro comum
 ]
 ```
 ```status: 400```
+</details>
+<br/>
+<details>
+<summary><b>Criação de um novo personagem</b></summary>
 
-###
 #### POST character
 
 Cadastrar um personagem novo.</br>
@@ -397,9 +410,11 @@ Erros comuns
 ]
 ```
 ```status: 400```
+</details>
 <br/>
+<details>
+<summary><b>Listagem dos personagens do usuário logado</b></summary>
 
-###
 #### GET character
 
 Listar personagens. **Utiliza paginação a partir de 10 personagens.**
@@ -449,8 +464,11 @@ Erro comum
 }
 ```
 ```status: 404```
+</details>
+<br/>
+<details>
+<summary><b>Detalhamento de um personagem</b></summary>
 
-###
 #### GET character-id
 
 Detalhar um personagem. O `id` deve ser enviado na url.
@@ -492,10 +510,11 @@ Erros comuns
 }
 ```
 ```status: 404```
-
+</details>
 <br/>
+<details>
+<summary><b>Alterar nome do personagem</b></summary>
 
-###
 #### PATCH character-id
 
 Alterar o nome do personagem. O `id` deve ser enviado na url.
@@ -562,8 +581,11 @@ Erros comuns
 ]
 ```
 ```status: 400```
+</details>
+<br/>
+<details>
+<summary><b>Remoção de um personagem</b></summary>
 
-###
 #### DELETE character-id
 
 Deletar um personagem. O `id` deve ser enviado na url.
@@ -597,8 +619,11 @@ Erros comuns
 }
 ```
 ```status: 404```
+</details>
+<br/>
+<details>
+<summary><b>Início de uma nova batalha</b></summary>
 
-###
 #### POST play
 
 Iniciar uma batalha. O `characterId` deve ser enviado na url. </br>
@@ -647,8 +672,11 @@ Erros comuns
 }
 ```
 ```status: 404```
+</details>
+<br/>
+<details>
+<summary><b>Execução de um ataque</b></summary>
 
-###
 #### POST attack
 
 Executar um ataque. O `characterId` e o `battleId` devem ser enviados na url. </br>
@@ -703,9 +731,11 @@ Erros comuns
 }
 ```
 ```status: 404```
+</details>
 <br/>
+<details>
+<summary><b>Execução de uma defesa</b></summary>
 
-###
 #### POST defense
 
 Executar uma defesa. O `characterId` e o `battleId` devem ser enviados na url. </br>
@@ -760,9 +790,11 @@ Erros comuns
 }
 ```
 ```status: 404```
+</details>
 <br/>
+<details>
+<summary><b>Apuração do dano</b></summary>
 
-###
 #### POST damage
 
 Calcular o dano. O `characterId` e o `battleId` devem ser enviados na url. </br>
@@ -838,9 +870,11 @@ Erros comuns
 }
 ```
 ```status: 404```
+</details>
 <br/>
+<details>
+<summary><b>Detalhamento de uma batalha e seus turnos</b></summary>
 
-###
 #### GET historic
 
 Buscar histórico de uma batalha. O `characterId` e o `battleId` devem ser enviados na url. </br>
@@ -918,9 +952,41 @@ Erro comum
 }
 ```
 ```status: 404```
+</details>
+
+## 4. 💻 Fluxos
+
+Diagrama do Banco de Dados:
+![DB_Diagram](images/DB_Diagram.jpg)
+
+Fluxo do Sistema:
+![SystemFlow](images/SystemFlow.jpg)
+
+Fluxo da Batalha:
+![BattleFlow](images/BattleFlow.jpg)
+
+## 5. 💻 Tecnologias usadas
+
+Languages, Frameworks & Librarys:   
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![SpringBoot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
+![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
+![JSON](https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+
+Tests:  
+![Insomnia](https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&logoColor=white)
+![JUnit](https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white)
+
+Database:  
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+
+IDE:  
+![Intellij](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 
 
-## 4. 👨‍💻 Autor
+## 6. 👨‍💻 Autor
+
 Criado por Daniel Justo
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielmjusto/)

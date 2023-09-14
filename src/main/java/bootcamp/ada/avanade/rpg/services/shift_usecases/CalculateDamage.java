@@ -21,10 +21,10 @@ import java.util.Optional;
 
 @Service
 public class CalculateDamage extends ShiftService {
-    private HeroWithInitiative strategyHeroWithInitiative;
-    private HeroWithoutInitiative strategyHeroWithoutInitiative;
-    private MonsterWithInitiative strategyMonsterWithInitiative;
-    private MonsterWithoutInitiative strategyMonsterWithoutInitiative;
+    private final HeroWithInitiative strategyHeroWithInitiative;
+    private final HeroWithoutInitiative strategyHeroWithoutInitiative;
+    private final MonsterWithInitiative strategyMonsterWithInitiative;
+    private final MonsterWithoutInitiative strategyMonsterWithoutInitiative;
     public CalculateDamage(ShiftRepository shiftRepository, BattleRepository battleRepository, HeroWithInitiative strategyHeroWithInitiative, HeroWithoutInitiative strategyHeroWithoutInitiative, MonsterWithInitiative strategyMonsterWithInitiative, MonsterWithoutInitiative strategyMonsterWithoutInitiative) {
         super(shiftRepository, battleRepository);
         this.strategyHeroWithInitiative = strategyHeroWithInitiative;

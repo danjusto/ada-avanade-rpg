@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class HistoricBattle {
-    private BattleRepository battleRepository;
+    private final BattleRepository battleRepository;
     public HistoricBattle(BattleRepository battleRepository) {
         this.battleRepository = battleRepository;
     }

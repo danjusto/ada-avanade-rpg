@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class Werewolf implements CharacterClass {
-    private int healthPoints = 34;
-    private int strength = 7;
-    private int defense = 4;
-    private int agility = 7;
-    private int diceFaces = 4;
-    private int diceQty = 2;
+    private final int healthPoints = 34;
+    private final int strength = 7;
+    private final int defense = 4;
+    private final int agility = 7;
+    private final int diceFaces = 4;
+    private final int diceQty = 2;
 }

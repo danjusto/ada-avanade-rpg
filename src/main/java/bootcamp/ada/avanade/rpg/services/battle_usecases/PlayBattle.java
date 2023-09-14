@@ -20,9 +20,9 @@ import java.util.Random;
 
 @Service
 public class PlayBattle {
-    private BattleRepository battleRepository;
-    private CharacterRepository characterRepository;
-    private UserRepository userRepository;
+    private final BattleRepository battleRepository;
+    private final CharacterRepository characterRepository;
+    private final UserRepository userRepository;
     private static Random random;
     public PlayBattle(BattleRepository battleRepository, CharacterRepository characterRepository, UserRepository userRepository) {
         this.battleRepository = battleRepository;

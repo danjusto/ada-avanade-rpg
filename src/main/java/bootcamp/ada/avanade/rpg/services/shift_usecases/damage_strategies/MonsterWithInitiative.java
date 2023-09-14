@@ -21,7 +21,7 @@ public class MonsterWithInitiative extends MonsterDamage implements StrategyDama
         CharacterClass monsterStats = battle.getCharacterClass();
         int diceDamage = rollCustomDice(monsterStats.getDiceFaces(), monsterStats.getDiceQty());
         shift.updateMonsterDmgAndCharacterHP(diceDamage);
-        if (shift.getPvCharacter() == 0) {
+        if (shift.getHpCharacter() == 0) {
             endBattle(battle, shift, false);
         }
         return saveBattleAndShift(battle, shift);

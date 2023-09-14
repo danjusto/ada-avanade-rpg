@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class Orc implements CharacterClass {
-    private int healthPoints = 42;
-    private int strength = 7;
-    private int defense = 1;
-    private int agility = 2;
-    private int diceFaces = 4;
-    private int diceQty = 3;
+    private final int healthPoints = 42;
+    private final int strength = 7;
+    private final int defense = 1;
+    private final int agility = 2;
+    private final int diceFaces = 4;
+    private final int diceQty = 3;
 }

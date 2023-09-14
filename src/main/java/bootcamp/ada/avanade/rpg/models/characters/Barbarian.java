@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class Barbarian implements CharacterClass {
-    private int healthPoints = 21;
-    private int strength = 10;
-    private int defense = 2;
-    private int agility = 5;
-    private int diceFaces = 8;
-    private int diceQty = 2;
+    private final int healthPoints = 21;
+    private final int strength = 10;
+    private final int defense = 2;
+    private final int agility = 5;
+    private final int diceFaces = 8;
+    private final int diceQty = 2;
 }

@@ -30,11 +30,11 @@ import java.security.Principal;
 @RequestMapping("/character")
 @SecurityRequirement(name = "bearer-key")
 public class CharacterController {
-    private CreateCharacter createCharacter;
-    private ListCharacters listCharacters;
-    private DetailCharacter detailCharacter;
-    private ChangeNameCharacter changeNameCharacter;
-    private RemoveCharacter removeCharacter;
+    private final CreateCharacter createCharacter;
+    private final ListCharacters listCharacters;
+    private final DetailCharacter detailCharacter;
+    private final ChangeNameCharacter changeNameCharacter;
+    private final RemoveCharacter removeCharacter;
     public CharacterController(CreateCharacter createCharacter, ListCharacters listCharacters, DetailCharacter detailCharacter, ChangeNameCharacter changeNameCharacter, RemoveCharacter removeCharacter) {
         this.createCharacter = createCharacter;
         this.listCharacters = listCharacters;

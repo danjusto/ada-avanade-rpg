@@ -29,11 +29,11 @@ import java.security.Principal;
 @RequestMapping("/battle")
 @SecurityRequirement(name = "bearer-key")
 public class GameController {
-    private PlayBattle playBattle;
-    private HistoricBattle historicBattle;
-    private Attack attack;
-    private Defense defense;
-    private CalculateDamage calculateDamage;
+    private final PlayBattle playBattle;
+    private final HistoricBattle historicBattle;
+    private final Attack attack;
+    private final Defense defense;
+    private final CalculateDamage calculateDamage;
     public GameController(PlayBattle playBattle, HistoricBattle historicBattle, Attack attack, Defense defense, CalculateDamage calculateDamage) {
         this.playBattle = playBattle;
         this.historicBattle = historicBattle;

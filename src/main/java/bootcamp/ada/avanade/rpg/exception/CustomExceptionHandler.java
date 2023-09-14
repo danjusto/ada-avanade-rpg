@@ -24,6 +24,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+    private static final String INVALID_TOKEN = "Invalid token";
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDTO("Invalid parameter"));
@@ -72,15 +73,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(UnsupportedJwtException.class)
     public ResponseEntity<Object> handleUnsupportedJwt(UnsupportedJwtException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO("Invalid token"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(INVALID_TOKEN));
     }
     @ExceptionHandler(MalformedJwtException.class)
     public ResponseEntity<Object> handleMalformedJwt(MalformedJwtException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO("Invalid token"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(INVALID_TOKEN));
     }
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<Object> handleSignatureEx(SignatureException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO("Invalid token"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionDTO(INVALID_TOKEN));
     }
     private record ArgNotValidDTO(String field, String message) {
         public ArgNotValidDTO(FieldError error) {

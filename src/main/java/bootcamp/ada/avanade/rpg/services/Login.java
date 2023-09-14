@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Login {
-    private AuthenticationManager authManager;
-    private JwtService jwtService;
+    private final AuthenticationManager authManager;
+    private final JwtService jwtService;
     public Login(AuthenticationManager authManager, JwtService jwtService) {
         this.authManager = authManager;
         this.jwtService = jwtService;
