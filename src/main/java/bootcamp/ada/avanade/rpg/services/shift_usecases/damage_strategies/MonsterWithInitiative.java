@@ -4,19 +4,15 @@ import bootcamp.ada.avanade.rpg.dto.response.DamageResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Shift;
 import bootcamp.ada.avanade.rpg.exception.PlayBookException;
-import bootcamp.ada.avanade.rpg.exception.ValidateActionException;
 import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MonsterWithInitiative extends Damage implements StrategyDamage {
-    private ShiftRepository shiftRepository;
-    private BattleRepository battleRepository;
+public class MonsterWithInitiative extends MonsterDamage implements StrategyDamage {
     public MonsterWithInitiative(ShiftRepository shiftRepository, BattleRepository battleRepository) {
-        this.shiftRepository = shiftRepository;
-        this.battleRepository = battleRepository;
+        super(shiftRepository, battleRepository);
     }
     @Override
     public DamageResponseDTO execute(Battle battle, Shift shift) {
@@ -35,16 +31,5 @@ public class MonsterWithInitiative extends Damage implements StrategyDamage {
         if (Boolean.FALSE.equals(shift.getMonsterHit())) {
             throw new PlayBookException("Monster missed attack");
         }
-    }
-    @Override
-    protected void checkDuplicateDamage(Shift shift) {
-        if (shift.getDamageMonster() != 0) {
-            throw new ValidateActionException("Damage already registered");
-        }
-    }
-    @Override
-    protected DamageResponseDTO saveBattleAndShift(Battle battle, Shift shift) {
-        this.battleRepository.save(battle);
-        return this.shiftRepository.save(shift).damageMonsterDTO();
     }
 }
