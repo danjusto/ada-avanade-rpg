@@ -16,9 +16,9 @@ public class LoginService {
         this.jwtService = jwtService;
     }
     public TokenDTO execute(LoginDTO dto) throws AuthenticationException {
-        var authToken = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
+        var authToken = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         this.authManager.authenticate(authToken);
-        var token = jwtService.generateToken(dto.email());
+        var token = jwtService.generateToken(dto.username());
         return new TokenDTO("Bearer", token);
     }
 }

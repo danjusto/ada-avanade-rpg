@@ -26,27 +26,27 @@ public class CharacterService {
     }
     @Transactional
     public CharacterResponseDTO executeCreate(Principal principal, CharacterRequestDTO dto) {
-        var user = getUserByEmail(principal.getName());
+        var user = getUserByUsername(principal.getName());
         checkCharacterNameExists(user.getId(), dto.name());
         return this.characterRepository.save(new Character(dto, user)).dto();
     }
     public Page<CharacterResponseDTO> executeList(Principal principal, Pageable pagination) {
-        var user = getUserByEmail(principal.getName());
+        var user = getUserByUsername(principal.getName());
         return this.characterRepository.findAllByUserId(user.getId(), pagination).map(Character::dto);
     }
     public CharacterResponseDTO executeDetails(Principal principal, Long id) {
-        var user = getUserByEmail(principal.getName());
+        var user = getUserByUsername(principal.getName());
         return getCharacter(id, user.getId()).dto();
     }
     @Transactional
     public void executeRemove(Principal principal, Long id) {
-        var user = getUserByEmail(principal.getName());
+        var user = getUserByUsername(principal.getName());
         var character = getCharacter(id, user.getId());
         this.characterRepository.delete(character);
     }
     @Transactional
     public CharacterResponseDTO executeChangeName(Principal principal, Long id, CharacterRequestDTO dto) {
-        var user = getUserByEmail(principal.getName());
+        var user = getUserByUsername(principal.getName());
         checkCharacterNameExists(user.getId(), dto.name());
         var character = getCharacter(id, user.getId());
         character.changeName(dto.name());
@@ -59,8 +59,8 @@ public class CharacterService {
         }
         return characterOptional.get();
     }
-    private User getUserByEmail(String email) {
-        Optional<User> user = this.userRepository.findByEmail(email);
+    private User getUserByUsername(String username) {
+        Optional<User> user = this.userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");
         }

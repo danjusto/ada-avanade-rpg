@@ -11,11 +11,15 @@ import bootcamp.ada.avanade.rpg.exception.AppException;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.Turn;
 import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
-import bootcamp.ada.avanade.rpg.models.damage.*;
 import bootcamp.ada.avanade.rpg.models.validations.attack.ValidateAttack;
 import bootcamp.ada.avanade.rpg.models.validations.defense.ValidateDefense;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
+import bootcamp.ada.avanade.rpg.services.damageStrategies.HeroWithInitiative;
+import bootcamp.ada.avanade.rpg.services.damageStrategies.HeroWithoutInitiative;
+import bootcamp.ada.avanade.rpg.services.damageStrategies.MonsterWithInitiative;
+import bootcamp.ada.avanade.rpg.services.damageStrategies.MonsterWithoutInitiative;
+import bootcamp.ada.avanade.rpg.services.damageStrategies.StrategyDamage;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -31,12 +35,20 @@ public class ShiftService {
     private BattleRepository battleRepository;
     private List<ValidateAttack> validateAttacks;
     private List<ValidateDefense> validateDefense;
+    private HeroWithInitiative strategyHeroWithInitiative;
+    private HeroWithoutInitiative strategyHeroWithoutInitiative;
+    private MonsterWithInitiative strategyMonsterWithInitiative;
+    private MonsterWithoutInitiative strategyMonsterWithoutInitiative;
     private static Random random;
-    public ShiftService(ShiftRepository shiftRepository, BattleRepository battleRepository, List<ValidateAttack> validateAttacks, List<ValidateDefense> validateDefense) {
+    public ShiftService(ShiftRepository shiftRepository, BattleRepository battleRepository, List<ValidateAttack> validateAttacks, List<ValidateDefense> validateDefense, HeroWithInitiative strategyHeroWithInitiative, HeroWithoutInitiative strategyHeroWithoutInitiative, MonsterWithInitiative strategyMonsterWithInitiative, MonsterWithoutInitiative strategyMonsterWithoutInitiative) {
         this.shiftRepository = shiftRepository;
         this.battleRepository = battleRepository;
         this.validateAttacks = validateAttacks;
         this.validateDefense = validateDefense;
+        this.strategyHeroWithInitiative = strategyHeroWithInitiative;
+        this.strategyHeroWithoutInitiative = strategyHeroWithoutInitiative;
+        this.strategyMonsterWithInitiative = strategyMonsterWithInitiative;
+        this.strategyMonsterWithoutInitiative = strategyMonsterWithoutInitiative;
     }
     @Transactional
     public AttackDTO executeAttack(Long characterId, Long battleId) {
@@ -56,7 +68,7 @@ public class ShiftService {
         this.validateDefense.forEach(v -> v.validate(shift, battle));
         int diceAtk = rollDiceTwelve();
         int diceDef = rollDiceTwelve();
-        Boolean hit = checkHit(battle, Turn.ATK, diceAtk, diceDef);
+        Boolean hit = checkHit(battle, Turn.DEF, diceAtk, diceDef);
         shift.updateDef(diceAtk, diceDef, hit);
         return this.shiftRepository.save(shift).defenseCharacterDTO();
     }
@@ -69,13 +81,13 @@ public class ShiftService {
     }
     private StrategyDamage chooseStrategy(Battle battle, Shift shift) {
         if (battle.getInitiative() == Initiative.HERO && shift.getDiceDefCharacter() == 0) {
-            return new HeroWithInitiative(this.shiftRepository, this.battleRepository);
+            return this.strategyHeroWithInitiative;
         } else if (battle.getInitiative() == Initiative.MONSTER && shift.getDiceDefMonster() == 0) {
-            return new MonsterWithInitiative(this.shiftRepository, this.battleRepository);
+            return this.strategyMonsterWithInitiative;
         } else if (battle.getInitiative() == Initiative.MONSTER) {
-            return new HeroWithoutInitiative(this.shiftRepository, this.battleRepository);
+            return this.strategyHeroWithoutInitiative;
         } else {
-            return new MonsterWithoutInitiative(this.shiftRepository, this.battleRepository);
+            return this.strategyMonsterWithoutInitiative;
         }
     }
     private Shift getShiftAndCheckIfEnded(Long id) {

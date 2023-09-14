@@ -1,4 +1,6 @@
 package bootcamp.ada.avanade.rpg.dto.request;
 
-public record DamageRequestDTO(Long shiftId) {
+import jakarta.validation.constraints.NotNull;
+
+public record DamageRequestDTO(@NotNull Long shiftId) {
 }

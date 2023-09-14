@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.List;
 
-
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @Override

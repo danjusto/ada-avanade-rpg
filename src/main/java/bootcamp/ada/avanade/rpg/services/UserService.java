@@ -25,40 +25,55 @@ public class UserService {
     }
     @Transactional
     public UserResponseDTO executeCreate(UserRequestDTO dto) {
-        checkUserWithEmailExists(dto.email());
+        checkIfUsernameIsAvaible(dto.username());
+        checkIfEmailIsAvaible(dto.email());
         var user = new User(dto);
         user.setPassword(this.passwordEncoder.encode(dto.password()));
         return this.userRepository.save(user).dto();
     }
     @Transactional
     public void executeChangePassword(Principal principal, PasswordRequestDTO dto) {
-        var user = getUserByEmail(principal.getName());
-        if (!this.passwordEncoder.matches(dto.password(), user.getPassword())) {
-            throw new PasswordException("Password not match");
-        }
+        var user = getUserByUsername(principal.getName());
+        checkIfPasswordMatch(dto.password(), user.getPassword());
         user.setPassword(this.passwordEncoder.encode(dto.newPassword()));
         userRepository.save(user);
     }
     @Transactional
     public UserResponseDTO executeEditUser(Principal principal, UserRequestDTO dto) {
-        var user = getUserByEmail(principal.getName());
-        if (!this.passwordEncoder.matches(dto.password(), user.getPassword())) {
-            throw new PasswordException("Password not match");
-        }
+        var user = getUserByUsername(principal.getName());
+        checkIfEmailIsAvaibleForChange(dto.email(), user.getId());
+        checkIfPasswordMatch(dto.password(), user.getPassword());
         user.editNameAndEmail(dto.name(), dto.email());
         return userRepository.save(user).dto();
     }
-    private User getUserByEmail(String email) {
-        Optional<User> user = this.userRepository.findByEmail(email);
+    private User getUserByUsername(String username) {
+        Optional<User> user = this.userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");
         }
         return user.get();
     }
-    private void checkUserWithEmailExists(String email) {
+    private void checkIfEmailIsAvaible(String email) {
         Optional<User> checkUserExists = this.userRepository.findByEmail(email);
         if (checkUserExists.isPresent()) {
             throw new AppException("Email already in use");
+        }
+    }
+    private void checkIfEmailIsAvaibleForChange(String email, Long id) {
+        Optional<User> checkUserExists = this.userRepository.findByEmailAndIdNot(email, id);
+        if (checkUserExists.isPresent()) {
+            throw new AppException("Email already in use");
+        }
+    }
+    private void checkIfUsernameIsAvaible(String username) {
+        Optional<User> checkUserExists = this.userRepository.findByUsername(username);
+        if (checkUserExists.isPresent()) {
+            throw new AppException("Username already in use");
+        }
+    }
+    private void checkIfPasswordMatch(String passwordTyped, String userPassword) {
+        if (!this.passwordEncoder.matches(passwordTyped, userPassword)) {
+            throw new PasswordException("Password not match");
         }
     }
 }

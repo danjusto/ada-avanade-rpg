@@ -16,7 +16,7 @@ public class SpringDocConfig {
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .info(new Info()
-                        .title("Shop-Order API")
-                        .description("A API Shop-Orders tem como objetivo persistir dados para gerenciamento de pedidos com base em um estoque de produtos. Foi realizado academicamente durante o Bootcamp Java Academy, iniciativa da Ada em parceria com a Avanade."));
+                        .title("RPG-D&D API")
+                        .description("A API RPG-D&D tem como objetivo controlar o fluxo de um jogo de RPG e persistir dados. Foi realizado academicamente durante o Bootcamp Java Academy, iniciativa da Ada em parceria com a Avanade."));
     }
 }

@@ -17,16 +17,14 @@ import java.io.IOException;
 public class AuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     private AuthenticationService authService;
-
     public AuthenticationFilter(JwtService jwtService, AuthenticationService authService) {
         this.jwtService = jwtService;
         this.authService = authService;
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = getToken(request);
-        if (this.jwtService.validateToken(token)) {
+        if (Boolean.TRUE.equals(this.jwtService.validateToken(token))) {
             var subject = this.jwtService.getSubject(token);
             var user = this.authService.loadUserByUsername(subject);
             var authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
@@ -34,7 +32,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
     private String getToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) {

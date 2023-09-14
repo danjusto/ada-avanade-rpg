@@ -33,7 +33,7 @@ public class BattleService {
     }
     @Transactional
     public BattleDTO executePlay(Principal principal, Long characterId) {
-        User user = getUserByEmail(principal.getName());
+        User user = getUser(principal.getName());
         Character character = getCharacter(characterId, user.getId());
         MonsterClass monster = chooseRandomMonster();
         Initiative initiative = decideInitiative();
@@ -91,8 +91,8 @@ public class BattleService {
         }
         return characterOptional.get();
     }
-    private User getUserByEmail(String email) {
-        Optional<User> user = this.userRepository.findByEmail(email);
+    private User getUser(String username) {
+        Optional<User> user = this.userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found");
         }
