@@ -1,7 +1,8 @@
 package bootcamp.ada.avanade.rpg.entities;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
 import bootcamp.ada.avanade.rpg.models.CharClass;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,8 +41,11 @@ public class Character {
         this.victories = 0;
         this.defeats = 0;
     }
-    public CharacterResponseDTO dto() {
-        return new CharacterResponseDTO(this.id, this.name, this.characterClass, this.victories, this.defeats, this.user.getId());
+    public CharacterDetailsResponseDTO dto() {
+        return new CharacterDetailsResponseDTO(this.id, this.name, this.characterClass, this.victories, this.defeats, this.user.getId());
+    }
+    public CharacterListDTO dtoList() {
+        return new CharacterListDTO(this.id, this.name, this.characterClass);
     }
     public void changeName(String newName) {
         this.name = newName;

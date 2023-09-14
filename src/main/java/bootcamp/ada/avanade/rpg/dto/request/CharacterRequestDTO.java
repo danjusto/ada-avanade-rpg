@@ -7,6 +7,6 @@ import jakarta.validation.constraints.NotNull;
 public record CharacterRequestDTO(
         @NotBlank
         String name,
-        @NotNull
+        @NotNull(message = "must not be null")
         CharClass characterClass) {
 }

@@ -1,5 +1,6 @@
 package bootcamp.ada.avanade.rpg.services;
 
+import bootcamp.ada.avanade.rpg.dto.request.EditUserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.User;
@@ -30,6 +31,7 @@ class UserServiceTest {
     private Principal principal;
     private Optional<User> userOptional;
     private UserRequestDTO requestDTO;
+    private EditUserRequestDTO editRequestDTO;
 
 
     @BeforeEach
@@ -71,13 +73,14 @@ class UserServiceTest {
     void ShouldThrowErrorBecauseEmailAlreadyExistOnEdit() {
         when(repository.findByUsername(anyString())).thenReturn(userOptional);
         when(repository.findByEmailAndIdNot(anyString(), any())).thenReturn(userOptional);
-        AppException appException = assertThrows(AppException.class, () -> service.executeEditUser(principal, requestDTO));
+        AppException appException = assertThrows(AppException.class, () -> service.executeEditUser(principal, editRequestDTO));
         assertEquals("Email already in use", appException.getMessage());
         verify(repository, never())
                 .save(any());
     }
     private void startUserTester() {
         this.requestDTO = new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678");
+        this.editRequestDTO = new EditUserRequestDTO("Tester Edited", "tester.edited@email.com", "12345678");
         this.user = new User(this.requestDTO);
         this.user.setPassword("12345678");
         this.userOptional = Optional.of(this.user);

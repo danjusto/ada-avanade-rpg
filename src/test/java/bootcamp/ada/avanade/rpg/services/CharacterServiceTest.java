@@ -2,7 +2,7 @@ package bootcamp.ada.avanade.rpg.services;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.User;
 import bootcamp.ada.avanade.rpg.exception.AppException;
@@ -53,7 +53,7 @@ class CharacterServiceTest {
         verify(characterRepository, times(1))
                 .save(any());
         assertNotNull(response);
-        assertEquals(CharacterResponseDTO.class, response.getClass());
+        assertEquals(CharacterDetailsResponseDTO.class, response.getClass());
     }
     @Test
     void ShouldThrowErrorBecauseUserNotFound() {
@@ -82,7 +82,7 @@ class CharacterServiceTest {
         verify(characterRepository, times(1))
                 .findByIdAndUserId(any(), any());
         assertNotNull(response);
-        assertEquals(CharacterResponseDTO.class, response.getClass());
+        assertEquals(CharacterDetailsResponseDTO.class, response.getClass());
     }
     @Test
     void ShouldThrowErrorBecauseCharacterNotFound() {
@@ -112,7 +112,7 @@ class CharacterServiceTest {
         verify(characterRepository, times(1))
                 .save(any());
         assertNotNull(response);
-        assertEquals(CharacterResponseDTO.class, response.getClass());
+        assertEquals(CharacterDetailsResponseDTO.class, response.getClass());
         assertEquals("Xoviwas", response.name());
     }
     private void startCharacterTester() {

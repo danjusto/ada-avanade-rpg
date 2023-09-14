@@ -1,7 +1,8 @@
 package bootcamp.ada.avanade.rpg.services;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
 import bootcamp.ada.avanade.rpg.entities.User;
 import bootcamp.ada.avanade.rpg.exception.AppException;
@@ -25,16 +26,16 @@ public class CharacterService {
         this.userRepository = userRepository;
     }
     @Transactional
-    public CharacterResponseDTO executeCreate(Principal principal, CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO executeCreate(Principal principal, CharacterRequestDTO dto) {
         var user = getUserByUsername(principal.getName());
         checkCharacterNameExists(user.getId(), dto.name());
         return this.characterRepository.save(new Character(dto, user)).dto();
     }
-    public Page<CharacterResponseDTO> executeList(Principal principal, Pageable pagination) {
+    public Page<CharacterListDTO> executeList(Principal principal, Pageable pagination) {
         var user = getUserByUsername(principal.getName());
-        return this.characterRepository.findAllByUserId(user.getId(), pagination).map(Character::dto);
+        return this.characterRepository.findAllByUserId(user.getId(), pagination).map(Character::dtoList);
     }
-    public CharacterResponseDTO executeDetails(Principal principal, Long id) {
+    public CharacterDetailsResponseDTO executeDetails(Principal principal, Long id) {
         var user = getUserByUsername(principal.getName());
         return getCharacter(id, user.getId()).dto();
     }
@@ -45,7 +46,7 @@ public class CharacterService {
         this.characterRepository.delete(character);
     }
     @Transactional
-    public CharacterResponseDTO executeChangeName(Principal principal, Long id, CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO executeChangeName(Principal principal, Long id, CharacterRequestDTO dto) {
         var user = getUserByUsername(principal.getName());
         checkCharacterNameExists(user.getId(), dto.name());
         var character = getCharacter(id, user.getId());

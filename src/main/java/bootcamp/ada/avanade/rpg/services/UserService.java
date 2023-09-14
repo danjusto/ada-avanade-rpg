@@ -1,5 +1,6 @@
 package bootcamp.ada.avanade.rpg.services;
 
+import bootcamp.ada.avanade.rpg.dto.request.EditUserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.PasswordRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
@@ -39,7 +40,7 @@ public class UserService {
         userRepository.save(user);
     }
     @Transactional
-    public UserResponseDTO executeEditUser(Principal principal, UserRequestDTO dto) {
+    public UserResponseDTO executeEditUser(Principal principal, EditUserRequestDTO dto) {
         var user = getUserByUsername(principal.getName());
         checkIfEmailIsAvaibleForChange(dto.email(), user.getId());
         checkIfPasswordMatch(dto.password(), user.getPassword());

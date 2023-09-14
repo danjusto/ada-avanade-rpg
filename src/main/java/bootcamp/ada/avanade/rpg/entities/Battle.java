@@ -1,7 +1,7 @@
 package bootcamp.ada.avanade.rpg.entities;
 
 import bootcamp.ada.avanade.rpg.dto.response.BattleDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
 import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
 import bootcamp.ada.avanade.rpg.models.Initiative;
 import bootcamp.ada.avanade.rpg.models.MonsterClass;
@@ -51,7 +51,7 @@ public class Battle {
         this.numberShifts = 1;
         this.date = LocalDateTime.now();
     }
-    public BattleDTO dto(CharacterResponseDTO characterDto) {
+    public BattleDTO dto(CharacterDetailsResponseDTO characterDto) {
         return new BattleDTO(this.id, this.monster, this.initiative, characterDto);
     }
     public void endBattle() {

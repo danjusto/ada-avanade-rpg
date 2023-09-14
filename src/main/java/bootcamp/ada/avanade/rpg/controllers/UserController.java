@@ -1,5 +1,6 @@
 package bootcamp.ada.avanade.rpg.controllers;
 
+import bootcamp.ada.avanade.rpg.dto.request.EditUserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.PasswordRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.UserResponseDTO;
@@ -38,7 +39,7 @@ public class UserController {
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearer-key")
-    public UserResponseDTO editUser(Principal principal, @RequestBody @Valid UserRequestDTO dto) {
+    public UserResponseDTO editUser(Principal principal, @RequestBody @Valid EditUserRequestDTO dto) {
         return this.userService.executeEditUser(principal, dto);
     }
 }

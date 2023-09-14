@@ -1,7 +1,8 @@
 package bootcamp.ada.avanade.rpg.controllers;
 
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
-import bootcamp.ada.avanade.rpg.dto.response.CharacterResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
+import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
 import bootcamp.ada.avanade.rpg.services.CharacterService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -31,17 +32,17 @@ public class CharacterController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CharacterResponseDTO create(Principal user, @RequestBody @Valid CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO create(Principal user, @RequestBody @Valid CharacterRequestDTO dto) {
         return this.characterService.executeCreate(user, dto);
     }
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Page<CharacterResponseDTO> list(Principal user, @PageableDefault(sort={"id"}) Pageable pagination) {
+    public Page<CharacterListDTO> list(Principal user, @PageableDefault(sort={"id"}) Pageable pagination) {
         return this.characterService.executeList(user, pagination);
     }
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CharacterResponseDTO details(Principal user, @PathVariable Long id) {
+    public CharacterDetailsResponseDTO details(Principal user, @PathVariable Long id) {
         return this.characterService.executeDetails(user, id);
     }
     @DeleteMapping("{id}")
@@ -51,7 +52,7 @@ public class CharacterController {
     }
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CharacterResponseDTO changeName(Principal user, @PathVariable Long id, @RequestBody @Valid CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO changeName(Principal user, @PathVariable Long id, @RequestBody @Valid CharacterRequestDTO dto) {
         return this.characterService.executeChangeName(user, id, dto);
     }
 }
