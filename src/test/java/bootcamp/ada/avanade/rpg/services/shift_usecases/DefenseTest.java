@@ -70,13 +70,13 @@ class DefenseTest {
         this.battleOptional = Optional.of(battle);
         this.shiftFirstDamage = new Shift();
         shiftFirstDamage.initialize(battle, 30, 40);
-        shiftFirstDamage.updateAtk(10,5,true);
+        shiftFirstDamage.updateAtk(10,5);
         shiftFirstDamage.updateCharacterDmgAndMonsterHP(10);
         this.shiftFirstDamageOptional = Optional.of(shiftFirstDamage);
         this.shiftSecondMove = new Shift();
         shiftSecondMove.initialize(battle, 30, 40);
-        shiftSecondMove.updateAtk(10,5,true);
+        shiftSecondMove.updateAtk(10,5);
         shiftSecondMove.updateCharacterDmgAndMonsterHP(10);
-        shiftSecondMove.updateDef(7,7, true);
+        shiftSecondMove.updateDef(7,7);
     }
 }

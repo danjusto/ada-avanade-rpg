@@ -27,8 +27,7 @@ public class Defense extends ShiftService {
         this.validateDefense.forEach(v -> v.validate(shift, battle));
         int diceAtk = rollDiceTwelve();
         int diceDef = rollDiceTwelve();
-        Boolean hit = checkHit(battle, Turn.DEF, diceAtk, diceDef);
-        shift.updateDef(diceAtk, diceDef, hit);
+        shift.updateDef(diceAtk, diceDef);
         return this.shiftRepository.save(shift).defenseCharacterDTO();
     }
 }

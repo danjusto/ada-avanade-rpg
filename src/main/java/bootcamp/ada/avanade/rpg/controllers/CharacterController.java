@@ -1,5 +1,6 @@
 package bootcamp.ada.avanade.rpg.controllers;
 
+import bootcamp.ada.avanade.rpg.dto.request.CharacterEditRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterListDTO;
@@ -64,7 +65,7 @@ public class CharacterController {
     }
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CharacterDetailsResponseDTO changeName(Principal user, @PathVariable Long id, @RequestBody @Valid CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO changeName(Principal user, @PathVariable Long id, @RequestBody @Valid CharacterEditRequestDTO dto) {
         return this.changeNameCharacter.execute(user, id, dto);
     }
 }

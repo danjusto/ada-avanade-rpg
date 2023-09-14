@@ -1,5 +1,6 @@
 package bootcamp.ada.avanade.rpg.services.character_usecases;
 
+import bootcamp.ada.avanade.rpg.dto.request.CharacterEditRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.request.UserRequestDTO;
 import bootcamp.ada.avanade.rpg.entities.Character;
@@ -32,7 +33,7 @@ class ChangeNameCharacterTest {
     private Optional<User> userOptional;
     private Character character;
     private Optional<Character> characterOptional;
-    private CharacterRequestDTO requestNameDTO;
+    private CharacterEditRequestDTO requestNameDTO;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +55,7 @@ class ChangeNameCharacterTest {
         var user = new User(new UserRequestDTO("Tester", "tester", "tester@email.com", "12345678"));
         this.userOptional = Optional.of(user);
         var requestDTO = new CharacterRequestDTO("Konan", CharClass.BARBARIAN);
-        this.requestNameDTO = new CharacterRequestDTO("Xoviwas", CharClass.BARBARIAN);
+        this.requestNameDTO = new CharacterEditRequestDTO("Xoviwas");
         this.character = new Character(requestDTO, user);
         this.characterOptional = Optional.of(this.character);
     }

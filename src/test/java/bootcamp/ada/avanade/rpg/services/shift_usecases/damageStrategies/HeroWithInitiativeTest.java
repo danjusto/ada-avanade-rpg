@@ -33,7 +33,6 @@ class HeroWithInitiativeTest {
     private BattleRepository battleRepository;
     private Battle battle;
     private Battle endedBattle;
-    private Shift shiftMissAtk;
     private Shift shiftHit;
     private Shift shiftDamage;
     private Shift shiftFinish;
@@ -43,11 +42,6 @@ class HeroWithInitiativeTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         startStrategyTester();
-    }
-    @Test
-    void ShouldThrowExceptionForMissedAttack() {
-        PlayBookException exception = assertThrows(PlayBookException.class, () -> strategy.execute(battle, shiftMissAtk));
-        assertEquals("Character missed attack", exception.getMessage());
     }
     @Test
     void ShouldThrowExceptionForDuplicateDamage() {
@@ -80,22 +74,19 @@ class HeroWithInitiativeTest {
         this.battle = new Battle(MonsterClass.ORC, Initiative.HERO, character);
         this.endedBattle = new Battle(MonsterClass.ORC, Initiative.HERO, character);
         endedBattle.endBattle();
-        this.shiftMissAtk = new Shift();
-        shiftMissAtk.initialize(battle, 30, 40);
-        shiftMissAtk.updateAtk(10,5,false);
         this.shiftHit = new Shift();
         shiftHit.initialize(battle, 30, 40);
-        shiftHit.updateAtk(10,5,true);
+        shiftHit.updateAtk(10,5);
         this.shiftDamage = new Shift();
         shiftDamage.initialize(battle, 30, 40);
-        shiftDamage.updateAtk(10,5,true);
+        shiftDamage.updateAtk(10,5);
         shiftDamage.updateCharacterDmgAndMonsterHP(10);
         this.shiftFinish = new Shift();
         shiftFinish.initialize(battle, 30, 1);
-        shiftFinish.updateAtk(10,5,true);
+        shiftFinish.updateAtk(10,5);
         this.endedShift = new Shift();
         endedShift.initialize(battle, 30, 8);
-        endedShift.updateAtk(10,5,true);
+        endedShift.updateAtk(10,5);
         endedShift.updateCharacterDmgAndMonsterHP(10);
         endedShift.setActive(false);
     }

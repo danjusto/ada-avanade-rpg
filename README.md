@@ -44,42 +44,16 @@ A API RPG-D&D tem como objetivo controlar o fluxo de um jogo de RPG e persistir 
     spring.datasource.url=jdbc:postgresql://localhost:5433/rpg_avanade
     ```
 
-6. Você precisará de uma ferramenta de teste de requisições como o [Insomnia](https://insomnia.rest/) ou utilizar o [Swagger-Ui](http://localhost:8080/swagger-ui/index.html), devendo seguir as orientações da documentação abaixo para utilizar a API.
+6. Você precisará de uma ferramenta de teste de requisições como o [Insomnia](https://insomnia.rest/), devendo seguir as orientações da documentação abaixo para utilizar a API. Também poderá utilizar o [Swagger-Ui](http://localhost:8080/swagger-ui/index.html), se preferir.
 
 7. Você pode rodar os testes automatizados criados com JUnit.
 
 ## 3. 🔌 Documentação
 ### Endpoints
 
-**Auth** <br/>
-[`POST /login`](#post-login) - Autenticação de usuário (login)
-<br/>
-
-**User** <br/>
-[`POST /user`](#post-user) - Criação de um novo usuário <br/>
-[`PATCH /user`](#patch-user) - Alterar nome ou e-mail do usuário <br/>
-[`PATCH /user/password`](#patch-user-password) - Alterar o password do usuário
-<br/>
-
-**Character** <br/>
-[`POST /character`](#post-character) - Criação de um novo personagem <br/>
-[`GET /character`](#get-character) - Listagem dos personagens do usuário logado <br/>
-[`GET /character/:id`](#get-character-id) - Detalhamento um de personagem <br/>
-[`PATCH /character/:id`](#patch-character-id) - Alterar o nome do personagem <br/>
-[`DELETE /character/:id`](#delete-character-id) - Remoção de um personagem
-<br/>
-
-**Game** <br/>
-[`POST /battle/:characterId/play`](#post-play) - Início de uma nova batalha <br/>
-[`POST /battle/:characterId/attack/:battleId`](#post-attack) - Execução de um ataque <br/>
-[`POST /battle/:characterId/defense/:battleId`](#post-defense) - Execução de uma defesa <br/>
-[`POST /battle/:characterId/damage/:battleId`](#post-damage) - Apuração do dano <br/>
-[`GET /battle/:characterId/historic/:battleId`](#get-historic) - Detalhamento de uma batalha e seus turnos
-
+**Login** - Autenticação de usuário <br/>
 <details>
-<summary><b>Autenticação de usuário</b></summary>
-
-#### POST login
+<summary><b>POST login</b></summary>
 
 Logar com um usuário por meio de `username` e `password`. Retorna um token JWT para ser utilizado nas requisições.
 
@@ -122,10 +96,10 @@ Erro comum
 ```status: 401```
 </details>
 <br/>
-<details>
-<summary><b>Criação de um novo usuário</b></summary>
 
-#### POST user
+**User** - Criação de um novo usuário, edição de um usuário e alteração da senha <br/>
+<details>
+<summary><b>POST user</b></summary>
 
 Criar um usuário para poder utilizar a API e jogar D&D.
 
@@ -206,13 +180,11 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Alterar nome ou e-mail do usuário</b></summary>
-
-#### PATCH user
-
-**Request**
+<summary><b>PATCH user</b></summary>
 
 Editar um usuário. Apenas nome e e-mail podem ser editados (ou apenas um dos dois).
+
+**Request**
 
 | **Nome** | **Obrigatório** |**Tipo**| **Descrição**                          |
 |:---------|:----------------| :------------ |:---------------------------------------|
@@ -281,13 +253,11 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Alterar password do usuário</b></summary>
-
-#### PATCH user-password
-
-**Request**
+<summary><b>PATCH user-password</b></summary>
 
 Alterar o password do usuário.
+
+**Request**
 
 | **Nome**      | **Obrigatório**|**Tipo**| **Descrição**      |
 |:--------------|:---------------| :------------ |:-------------------|
@@ -342,10 +312,11 @@ Erro comum
 ```status: 400```
 </details>
 <br/>
-<details>
-<summary><b>Criação de um novo personagem</b></summary>
 
-#### POST character
+**Character** - Criação de um novo personagem, listagem dos personagens do usuário logado, detalhamento de um personagem, alterar o nome do personagem, remover um personagem <br/>
+
+<details>
+<summary><b>POST character</b></summary>
 
 Cadastrar um personagem novo.</br>
 **Atente-se que o `characterClass` é um Enum e aceita os seguintes tipos:** `WARRIOR`, `BARBARIAN`, `KNIGHT`, `ORC`, `GIANT`, `WEREWOLF`.
@@ -413,9 +384,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Listagem dos personagens do usuário logado</b></summary>
-
-#### GET character
+<summary><b>GET character</b></summary>
 
 Listar personagens. **Utiliza paginação a partir de 10 personagens.**
 
@@ -467,9 +436,7 @@ Erro comum
 </details>
 <br/>
 <details>
-<summary><b>Detalhamento de um personagem</b></summary>
-
-#### GET character-id
+<summary><b>GET character-id</b></summary>
 
 Detalhar um personagem. O `id` deve ser enviado na url.
 
@@ -513,9 +480,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Alterar nome do personagem</b></summary>
-
-#### PATCH character-id
+<summary><b>PATCH character-id</b></summary>
 
 Alterar o nome do personagem. O `id` deve ser enviado na url.
 
@@ -584,9 +549,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Remoção de um personagem</b></summary>
-
-#### DELETE character-id
+<summary><b>DELETE character-id</b></summary>
 
 Deletar um personagem. O `id` deve ser enviado na url.
 
@@ -621,10 +584,11 @@ Erros comuns
 ```status: 404```
 </details>
 <br/>
-<details>
-<summary><b>Início de uma nova batalha</b></summary>
 
-#### POST play
+**Game** - Início de uma nova batalha, execução de um ataque, execução de uma defesa, apuração de dano, detalhamento de uma batalha e seus turnos <br/>
+
+<details>
+<summary><b>POST play</b></summary>
 
 Iniciar uma batalha. O `characterId` deve ser enviado na url. </br>
 Exemplo: `.../battle/{characterId}/play` </br>
@@ -675,9 +639,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Execução de um ataque</b></summary>
-
-#### POST attack
+<summary><b>POST attack</b></summary>
 
 Executar um ataque. O `characterId` e o `battleId` devem ser enviados na url. </br>
 Exemplo: `.../battle/{characterId}/attack/{battleId}` </br>
@@ -734,9 +696,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Execução de uma defesa</b></summary>
-
-#### POST defense
+<summary><b>POST defense</b></summary>
 
 Executar uma defesa. O `characterId` e o `battleId` devem ser enviados na url. </br>
 Exemplo: `.../battle/{characterId}/defense/{battleId}` </br>
@@ -793,9 +753,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Apuração do dano</b></summary>
-
-#### POST damage
+<summary><b>POST damage</b></summary>
 
 Calcular o dano. O `characterId` e o `battleId` devem ser enviados na url. </br>
 Exemplo: `.../battle/{characterId}/damage/{battleId}` </br>
@@ -873,9 +831,7 @@ Erros comuns
 </details>
 <br/>
 <details>
-<summary><b>Detalhamento de uma batalha e seus turnos</b></summary>
-
-#### GET historic
+<summary><b>GET historic</b></summary>
 
 Buscar histórico de uma batalha. O `characterId` e o `battleId` devem ser enviados na url. </br>
 Exemplo: `.../battle/{characterId}/historic/{battleId}` </br>

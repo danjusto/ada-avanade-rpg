@@ -34,7 +34,6 @@ class MonsterWithoutInitiativeTest {
     private BattleRepository battleRepository;
     private Battle battle;
     private Battle endedBattle;
-    private Shift shiftMissAtk;
     private Shift shiftHit;
     private Shift shiftDamage;
     private Shift shiftFinish;
@@ -44,11 +43,6 @@ class MonsterWithoutInitiativeTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         startStrategyTester();
-    }
-    @Test
-    void ShouldThrowExceptionForMissedAttack() {
-        PlayBookException exception = assertThrows(PlayBookException.class, () -> strategy.execute(battle, shiftMissAtk));
-        assertEquals("Monster missed attack", exception.getMessage());
     }
     @Test
     void ShouldThrowExceptionForDuplicateDamage() {
@@ -81,32 +75,27 @@ class MonsterWithoutInitiativeTest {
         this.battle = new Battle(MonsterClass.ORC, Initiative.HERO, character);
         this.endedBattle = new Battle(MonsterClass.ORC, Initiative.HERO, character);
         endedBattle.endBattle();
-        this.shiftMissAtk = new Shift();
-        shiftMissAtk.initialize(battle, 30, 40);
-        shiftMissAtk.updateAtk(10, 5, true);
-        shiftMissAtk.updateCharacterDmgAndMonsterHP(10);
-        shiftMissAtk.updateDef(10,5,false);
         this.shiftHit = new Shift();
         shiftHit.initialize(battle, 30, 40);
-        shiftHit.updateAtk(10, 5, true);
+        shiftHit.updateAtk(10, 5);
         shiftHit.updateCharacterDmgAndMonsterHP(10);
-        shiftHit.updateDef(10,5,true);
+        shiftHit.updateDef(10,5);
         this.shiftDamage = new Shift();
         shiftDamage.initialize(battle, 30, 40);
-        shiftDamage.updateAtk(10, 5, true);
+        shiftDamage.updateAtk(10, 5);
         shiftDamage.updateCharacterDmgAndMonsterHP(10);
-        shiftDamage.updateDef(10,5,true);
+        shiftDamage.updateDef(10,5);
         shiftDamage.updateMonsterDmgAndCharacterHP(10);
         this.shiftFinish = new Shift();
         shiftFinish.initialize(battle, 30, 1);
-        shiftFinish.updateAtk(10, 5, true);
+        shiftFinish.updateAtk(10, 5);
         shiftFinish.updateCharacterDmgAndMonsterHP(10);
-        shiftFinish.updateDef(10,5,true);
+        shiftFinish.updateDef(10,5);
         this.endedShift = new Shift();
         endedShift.initialize(battle, 30, 40);
-        endedShift.updateAtk(10, 5, true);
+        endedShift.updateAtk(10, 5);
         endedShift.updateCharacterDmgAndMonsterHP(10);
-        endedShift.updateDef(10,5,true);
+        endedShift.updateDef(10,5);
         endedShift.updateMonsterDmgAndCharacterHP(10);
         endedShift.setActive(false);
     }

@@ -43,20 +43,6 @@ public abstract class ShiftService {
         }
         return battleOptional.get();
     }
-    protected Boolean checkHit(Battle battle, Turn turn, int diceAtk, int diceDef) {
-        CharacterClass heroStats = battle.getCharacterClass();
-        CharacterClass monsterStats = battle.getMonsterClass();
-        int averageAtk;
-        int averageDef;
-        if (turn == Turn.ATK) {
-            averageAtk = diceAtk + heroStats.getStrength() + heroStats.getAgility();
-            averageDef = diceDef + monsterStats.getDefense() + monsterStats.getAgility();
-        } else {
-            averageAtk = diceAtk + monsterStats.getStrength() + monsterStats.getAgility();
-            averageDef = diceDef + heroStats.getDefense() + heroStats.getAgility();
-        }
-        return averageAtk > averageDef;
-    }
     protected int rollDiceTwelve() {
         int min = 1;
         return getRandom().nextInt(12) + min;

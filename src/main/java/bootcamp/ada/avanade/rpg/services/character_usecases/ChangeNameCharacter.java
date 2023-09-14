@@ -1,6 +1,6 @@
 package bootcamp.ada.avanade.rpg.services.character_usecases;
 
-import bootcamp.ada.avanade.rpg.dto.request.CharacterRequestDTO;
+import bootcamp.ada.avanade.rpg.dto.request.CharacterEditRequestDTO;
 import bootcamp.ada.avanade.rpg.dto.response.CharacterDetailsResponseDTO;
 import bootcamp.ada.avanade.rpg.repositories.CharacterRepository;
 import bootcamp.ada.avanade.rpg.repositories.UserRepository;
@@ -16,7 +16,7 @@ public class ChangeNameCharacter extends CharacterService {
         super(characterRepository, userRepository);
     }
     @Transactional
-    public CharacterDetailsResponseDTO execute(Principal principal, Long id, CharacterRequestDTO dto) {
+    public CharacterDetailsResponseDTO execute(Principal principal, Long id, CharacterEditRequestDTO dto) {
         var user = getUserByUsername(principal.getName());
         checkCharacterNameExists(user.getId(), dto.name());
         var character = getCharacter(id, user.getId());

@@ -8,21 +8,13 @@ import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
 
 public abstract class HeroDamage extends Damage {
-    private final ShiftRepository shiftRepository;
-    private final BattleRepository battleRepository;
     protected HeroDamage(ShiftRepository shiftRepository, BattleRepository battleRepository) {
-        this.shiftRepository = shiftRepository;
-        this.battleRepository = battleRepository;
+        super(shiftRepository, battleRepository);
     }
     @Override
     protected void checkDuplicateDamage(Shift shift) {
         if (shift.getDamageCharacter() != 0) {
             throw new ValidateActionException("Damage already registered");
         }
-    }
-    @Override
-    protected DamageResponseDTO saveBattleAndShift(Battle battle, Shift shift) {
-        this.battleRepository.save(battle);
-        return this.shiftRepository.save(shift).damageCharacterDTO();
     }
 }

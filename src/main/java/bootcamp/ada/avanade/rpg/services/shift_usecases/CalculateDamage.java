@@ -6,6 +6,8 @@ import bootcamp.ada.avanade.rpg.entities.Battle;
 import bootcamp.ada.avanade.rpg.entities.Shift;
 import bootcamp.ada.avanade.rpg.exception.AlreadyEndedException;
 import bootcamp.ada.avanade.rpg.models.Initiative;
+import bootcamp.ada.avanade.rpg.models.Turn;
+import bootcamp.ada.avanade.rpg.models.characters.CharacterClass;
 import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
 import bootcamp.ada.avanade.rpg.services.ShiftService;
@@ -14,6 +16,7 @@ import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWi
 import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.MonsterWithInitiative;
 import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.MonsterWithoutInitiative;
 import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.StrategyDamage;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -51,10 +54,14 @@ public class CalculateDamage extends ShiftService {
         }
     }
     private Shift getShiftAndCheckIfEnded(Long id) {
-        Optional<Shift> shiftOptional = this.shiftRepository.findByIdAndActiveTrue(id);
-        if (shiftOptional.isEmpty()) {
+        Optional<Shift> firstTry = this.shiftRepository.findById(id);
+        if (firstTry.isEmpty()) {
+            throw new EntityNotFoundException("Shift not found");
+        }
+        Optional<Shift> secondTry = this.shiftRepository.findByIdAndActiveTrue(id);
+        if (secondTry.isEmpty()) {
             throw new AlreadyEndedException("Shift has ended");
         }
-        return shiftOptional.get();
+        return secondTry.get();
     }
 }

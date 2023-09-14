@@ -46,15 +46,13 @@ public class Shift {
         this.hpMonster = hpMonster;
         this.active = true;
     }
-    public void updateAtk(int diceAtk, int diceDef, Boolean hit) {
+    public void updateAtk(int diceAtk, int diceDef) {
         this.diceAtkCharacter = diceAtk;
         this.diceDefMonster = diceDef;
-        this.characterHit = hit;
     }
-    public void updateDef(int diceAtk, int diceDef, Boolean hit) {
+    public void updateDef(int diceAtk, int diceDef) {
         this.diceAtkMonster = diceAtk;
         this.diceDefCharacter = diceDef;
-        this.monsterHit = hit;
     }
     public void updateCharacterDmgAndMonsterHP(int diceDamage) {
         this.damageCharacter = diceDamage;
@@ -80,10 +78,10 @@ public class Shift {
         );
     }
     public AttackDTO attackCharacterDTO() {
-        return new AttackDTO(this.id, this.characterHit, this.diceAtkCharacter, this.diceDefMonster);
+        return new AttackDTO(this.id, this.diceAtkCharacter, this.diceDefMonster);
     }
     public DefenseDTO defenseCharacterDTO() {
-        return new DefenseDTO(this.id, this.monsterHit, this.diceDefCharacter, this.diceAtkMonster);
+        return new DefenseDTO(this.id, this.diceDefCharacter, this.diceAtkMonster);
     }
     public DamageResponseDTO damageCharacterDTO() {
         return new DamageResponseDTO(this.id, this.damageCharacter, this.hpMonster);

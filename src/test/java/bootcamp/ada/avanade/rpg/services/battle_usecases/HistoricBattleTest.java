@@ -64,9 +64,9 @@ class HistoricBattleTest {
         var battle = new Battle(MonsterClass.ORC, Initiative.HERO, character);
         var shiftEnded = new Shift();
         shiftEnded.initialize(battle, 30, 40);
-        shiftEnded.updateAtk(10,5,true);
+        shiftEnded.updateAtk(10,5);
         shiftEnded.updateCharacterDmgAndMonsterHP(10);
-        shiftEnded.updateDef(7,7, true);
+        shiftEnded.updateDef(7,7);
         shiftEnded.updateMonsterDmgAndCharacterHP(10);
         shiftEnded.setActive(false);
         battle.setShifts(List.of(shiftEnded));

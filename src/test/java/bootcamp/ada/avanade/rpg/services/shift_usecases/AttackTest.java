@@ -92,6 +92,6 @@ class AttackTest {
         this.shiftInitializedOptional = Optional.of(shiftInitialized);
         this.shiftFirstMove = new Shift();
         shiftFirstMove.initialize(battle, 30, 40);
-        shiftFirstMove.updateAtk(10,5,true);
+        shiftFirstMove.updateAtk(10,5);
     }
 }

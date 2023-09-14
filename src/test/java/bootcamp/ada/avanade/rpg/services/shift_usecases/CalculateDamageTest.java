@@ -16,6 +16,7 @@ import bootcamp.ada.avanade.rpg.repositories.BattleRepository;
 import bootcamp.ada.avanade.rpg.repositories.ShiftRepository;
 import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.HeroWithInitiative;
 import bootcamp.ada.avanade.rpg.services.shift_usecases.damage_strategies.MonsterWithoutInitiative;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -56,13 +57,22 @@ class CalculateDamageTest {
     @Test
     void ShouldThrowErrorBecauseShiftHasEnded() {
         when(battleRepository.findByIdAndCharacterId(any(), any())).thenReturn(battleOptional);
+        when(shiftRepository.findById(any())).thenReturn(shiftFirstMoveOptional);
         when(shiftRepository.findByIdAndActiveTrue(any())).thenReturn(Optional.empty());
         AlreadyEndedException exception = assertThrows(AlreadyEndedException.class, () -> useCase.execute(any(), any(), dmgRequestDto));
         assertEquals("Shift has ended", exception.getMessage());
     }
     @Test
+    void ShouldThrowErrorBecauseShiftNotFound() {
+        when(battleRepository.findByIdAndCharacterId(any(), any())).thenReturn(battleOptional);
+        when(shiftRepository.findById(any())).thenReturn(Optional.empty());
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> useCase.execute(any(), any(), dmgRequestDto));
+        assertEquals("Shift not found", exception.getMessage());
+    }
+    @Test
     void ShouldCompleteFlowHeroInitiativeWithoutException() {
         when(battleRepository.findByIdAndCharacterId(any(), any())).thenReturn(battleOptional);
+        when(shiftRepository.findById(any())).thenReturn(shiftFirstMoveOptional);
         when(shiftRepository.findByIdAndActiveTrue(any())).thenReturn(shiftFirstMoveOptional);
         when(strategyHeroWithInitiative.execute(any(), any())).thenReturn(shiftFirstDamage.damageCharacterDTO());
         assertDoesNotThrow(()->useCase.execute(any(), any(), dmgRequestDto));
@@ -70,6 +80,7 @@ class CalculateDamageTest {
     @Test
     void ShouldCompleteFlowMonsterInitiativeWithoutException() {
         when(battleRepository.findByIdAndCharacterId(any(), any())).thenReturn(battleOptional);
+        when(shiftRepository.findById(any())).thenReturn(shiftSecondMoveOptional);
         when(shiftRepository.findByIdAndActiveTrue(any())).thenReturn(shiftSecondMoveOptional);
         when(strategyMonsterWithoutInitiative.execute(any(), any())).thenReturn(shiftEnded.damageCharacterDTO());
         assertDoesNotThrow(()->useCase.execute(any(), any(), dmgRequestDto));
@@ -81,23 +92,23 @@ class CalculateDamageTest {
         this.battleOptional = Optional.of(battle);
         this.shiftFirstMove = new Shift();
         shiftFirstMove.initialize(battle, 30, 40);
-        shiftFirstMove.updateAtk(10,5,true);
+        shiftFirstMove.updateAtk(10,5);
         this.shiftFirstMoveOptional = Optional.of(shiftFirstMove);
         this.shiftFirstDamage = new Shift();
         shiftFirstDamage.initialize(battle, 30, 40);
-        shiftFirstDamage.updateAtk(10,5,true);
+        shiftFirstDamage.updateAtk(10,5);
         shiftFirstDamage.updateCharacterDmgAndMonsterHP(10);
         this.shiftSecondMove = new Shift();
         shiftSecondMove.initialize(battle, 30, 40);
-        shiftSecondMove.updateAtk(10,5,true);
+        shiftSecondMove.updateAtk(10,5);
         shiftSecondMove.updateCharacterDmgAndMonsterHP(10);
-        shiftSecondMove.updateDef(7,7, true);
+        shiftSecondMove.updateDef(7,7);
         this.shiftSecondMoveOptional = Optional.of(shiftSecondMove);
         this.shiftEnded = new Shift();
         shiftEnded.initialize(battle, 30, 40);
-        shiftEnded.updateAtk(10,5,true);
+        shiftEnded.updateAtk(10,5);
         shiftEnded.updateCharacterDmgAndMonsterHP(10);
-        shiftEnded.updateDef(7,7, true);
+        shiftEnded.updateDef(7,7);
         shiftEnded.updateMonsterDmgAndCharacterHP(10);
         shiftEnded.setActive(false);
         this.dmgRequestDto = new DamageRequestDTO(1L);
